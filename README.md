@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # BonBunny 甜點工作室
 
 這是一個使用 Next.js 和 TypeScript 開發的甜點工作室購物網站。
@@ -57,3 +58,6 @@ src/
 ## 部署
 
 此網站可以部署在任何支持 Node.js 的平台上，推薦使用 Vercel 進行部署。
+=======
+# bonbunny
+>>>>>>> 959c0637569030a199c2171d99c6dd7dc800daae

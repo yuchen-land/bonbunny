@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // 禁用開發環境中的 HTTPS
+  server: {
+    https: false,
+  },
 };
 
 export default nextConfig;

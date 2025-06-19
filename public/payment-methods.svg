@@ -1,0 +1,21 @@
+<svg width="200" height="30" viewBox="0 0 200 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Credit Card Icon -->
+  <rect x="10" y="5" width="40" height="25" rx="2" fill="currentColor"/>
+  <rect x="15" y="10" width="30" height="5" fill="white"/>
+  <rect x="15" y="20" width="20" height="5" fill="white"/>
+  
+  <!-- Line In -->
+  <rect x="60" y="5" width="40" height="25" rx="2" fill="currentColor"/>
+  <text x="65" y="22" font-family="Arial" font-size="12" fill="white">LINE</text>
+  
+  <!-- Bank Transfer -->
+  <rect x="110" y="5" width="40" height="25" rx="2" fill="currentColor"/>
+  <path d="M120 15h20v5h-20z" fill="white"/>
+  <path d="M125 10v15" stroke="white" stroke-width="2"/>
+  <path d="M135 10v15" stroke="white" stroke-width="2"/>
+  
+  <!-- Convenience Store -->
+  <rect x="160" y="5" width="40" height="25" rx="2" fill="currentColor"/>
+  <rect x="165" y="10" width="30" height="15" stroke="white" fill="none"/>
+  <path d="M165 15h30" stroke="white"/>
+</svg>

@@ -2,12 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   FaCookie,
   FaBirthdayCake,
   FaBreadSlice,
   FaMugHot,
+  FaLeaf,
+  FaClock,
+  FaHeart,
+  FaAward,
 } from "react-icons/fa";
+import Banner from "./components/Banner";
 import ProductCard from "./components/ProductCard";
 import { Product, ProductCategory, ProductStatus } from "./types";
 
@@ -60,156 +66,139 @@ const categories = [
 ];
 
 export default function Home() {
+  const stats = [
+    { icon: FaHeart, label: "顧客滿意", value: "98%" },
+    { icon: FaClock, label: "營業時間", value: "8-21" },
+    { icon: FaLeaf, label: "天然食材", value: "100%" },
+    { icon: FaAward, label: "專業認證", value: "5+" },
+  ];
+
   return (
     <main className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-[600px] lg:h-[70vh] bg-gradient-to-r from-primary-light to-secondary">
-        <div className="container h-full py-20 lg:py-0">
-          <div className="flex h-full flex-col justify-center">
-            <div className="max-w-2xl space-y-6 animate-in">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                享受美味甜點的
-                <br className="hidden sm:block" />
-                <span className="text-primary">完美時光</span>
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-muted max-w-prose">
-                嚴選食材、匠心製作，為您帶來最幸福的甜蜜滋味
-              </p>
-              <Link
-                href="/product"
-                className="inline-block btn-primary text-base"
+      {/* Banner Section */}
+      <Banner />
+
+      {/* Featured Products Section */}
+      <section className="section">
+        <div className="absolute inset-0 bg-[url('/images/dot-pattern.svg')] opacity-20" />
+        <div className="container relative">
+          <motion.div
+            className="text-center max-w-xl mx-auto mb-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="heading text-balance">人氣推薦</h2>
+            <p className="subheading">
+              精心挑選的人氣甜點，讓每一口都充滿幸福感
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
               >
-                立即選購
-              </Link>
-            </div>
+                <ProductCard product={product} />
+              </motion.div>
+            ))}
           </div>
-        </div>
-        <div className="absolute inset-0 z-0 opacity-10">
-          <Image
-            src="/images/pattern.png"
-            alt="Background pattern"
-            fill
-            className="object-cover"
-            priority
-          />
         </div>
       </section>
 
       {/* Categories Section */}
-      <section className="py-12 sm:py-16 bg-background-secondary">
-        <div className="container px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">
-            商品分類
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
-            {categories.map((cat) => {
+      <section className="section bg-background-secondary/20">
+        <div className="absolute inset-0 bg-[url('/images/curve-pattern.svg')] opacity-30" />
+        <div className="container relative">
+          <motion.div
+            className="text-center max-w-xl mx-auto mb-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="heading text-balance">精選系列</h2>
+            <div className="w-12 h-0.5 bg-primary/30 mx-auto"></div>
+          </motion.div>          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {categories.map((cat, index) => {
               const Icon = cat.icon;
               return (
-                <Link
+                <motion.div
                   key={cat.name}
-                  href={`/product?category=${cat.category}`}
-                  className="group p-4 sm:p-6 text-center card hover-scale"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <div className="mb-3 sm:mb-4 inline-flex h-12 sm:h-16 w-12 sm:w-16 items-center justify-center rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                    <Icon className="h-6 sm:h-8 w-6 sm:w-8" />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-medium">
-                    {cat.name}
-                  </h3>
-                </Link>
+                  <Link
+                    href={`/category/${cat.category}`}
+                    className="glass group block rounded-lg p-6 text-center border border-border/30 hover:border-primary/30 transition-all hover:shadow-lg"
+                  >
+                    <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-primary/5 text-primary group-hover:bg-primary/10 transition-colors">
+                      <Icon className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-lg font-medium group-hover:text-primary transition-colors">
+                      {cat.name}
+                    </h3>
+                  </Link>
+                </motion.div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Featured Products Section */}
-      <section className="py-12 sm:py-16">
-        <div className="container px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-8 sm:mb-12 space-y-4 sm:space-y-0">
-            <h2 className="text-2xl sm:text-3xl font-bold">推薦商品</h2>
-            <Link href="/product" className="btn-secondary w-full sm:w-auto">
-              查看全部
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+      {/* Statistics Section */}
+      <section className="section bg-background">
+        <div className="container">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="glass card p-6 text-center"
+                >
+                  <Icon className="w-8 h-8 mx-auto mb-3 text-primary" />
+                  <div className="text-2xl font-bold mb-1 text-gradient">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-muted">{stat.label}</div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-12 sm:py-16 bg-background-secondary">
-        <div className="container px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">
-            為什麼選擇我們
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-            <div className="p-4 sm:p-6 text-center card">
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-success/10 text-success">
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg sm:text-xl font-medium mb-2">嚴選食材</h3>
-              <p className="text-sm sm:text-base text-muted">
-                使用最優質的食材，確保每一口都充滿幸福滋味
+      {/* Newsletter Section */}
+      <section className="section bg-background-secondary/20">
+        <div className="container">
+          <div className="glass card max-w-4xl mx-auto p-8 md:p-12">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="heading text-balance mb-4">訂閱我們</h2>
+              <p className="subheading mb-8">
+                訂閱電子報，獲得最新優惠和甜點資訊
               </p>
-            </div>
-            <div className="p-4 sm:p-6 text-center card">
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-warning/10 text-warning">
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg sm:text-xl font-medium mb-2">新鮮製作</h3>
-              <p className="text-sm sm:text-base text-muted">
-                堅持每日新鮮製作，讓您品嘗最佳風味
-              </p>
-            </div>
-            <div className="p-4 sm:p-6 text-center card">
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-lg sm:text-xl font-medium mb-2">精緻包裝</h3>
-              <p className="text-sm sm:text-base text-muted">
-                精美的包裝設計，讓甜點更添儀式感
-              </p>
-            </div>
+              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input
+                  type="email"
+                  placeholder="請輸入您的 Email"
+                  className="flex-1 rounded-lg border border-border/50 px-4 py-2 bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                />
+                <button className="btn-primary whitespace-nowrap">
+                  立即訂閱
+                </button>
+              </form>
+            </motion.div>
           </div>
         </div>
       </section>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 為了防止被切到，增加一些 padding -->
+  <g transform="translate(4, 4)">
+    <!-- 兔子圖案 -->
+    <circle cx="16" cy="16" r="14" fill="#FF8BA7"/>
+    <circle cx="11" cy="13" r="2.5" fill="white"/>
+    <circle cx="21" cy="13" r="2.5" fill="white"/>
+    <path d="M11 20C11 20 14 23 16 23C18 23 21 20 21 20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- 文字 "BonBunny" -->
+    <text x="38" y="22" font-family="Arial" font-weight="bold" font-size="20" fill="#33272A">
+      BonBunny
+    </text>
+  </g>
+</svg>

@@ -42,82 +42,68 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link
       href={`/product/${product.id}`}
-      className="group block w-full h-full overflow-hidden card hover-scale"
+      className="group block w-full h-full overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* 商品圖片 */}
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-background-secondary">
-        <Image
-          src={product.images[0]}
-          alt={product.name}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-110"
-          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-        />
-
-        {/* 收藏按鈕 */}
-        <button
-          onClick={handleFavoriteClick}
-          className={`absolute top-2 right-2 p-2 rounded-full transition-all duration-300 shadow-sm
-            ${
-              isHovered
-                ? "opacity-100 scale-100"
-                : "opacity-0 scale-95 sm:opacity-100 sm:scale-100"
-            }
-            ${
-              isFavorite
-                ? "bg-primary text-white"
-                : "bg-background text-foreground hover:bg-primary hover:text-white"
-            }`}
-        >
-          {isFavorite ? (
-            <FaHeart className="h-4 w-4 sm:h-5 sm:w-5" />
-          ) : (
-            <FaRegHeart className="h-4 w-4 sm:h-5 sm:w-5" />
+      <div className="glass card h-full transition-all duration-300 hover:scale-[1.02]">
+        {/* 商品圖片 */}
+        <div className="relative aspect-square overflow-hidden rounded-t-lg bg-background-secondary">
+          {product.images?.[0] && (
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-300 group-hover:scale-110"
+            />
           )}
-        </button>
-      </div>
+          <button
+            onClick={handleFavoriteClick}
+            className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors shadow-sm"
+          >
+            {isFavorite ? (
+              <FaHeart className="w-5 h-5 text-primary" />
+            ) : (
+              <FaRegHeart className="w-5 h-5 text-muted hover:text-primary transition-colors" />
+            )}
+          </button>
+          {/* 商品狀態標籤 */}
+          {product.status !== ProductStatus.ACTIVE && (
+            <div className="absolute bottom-3 right-3 px-2 py-1 text-xs rounded bg-black/50 backdrop-blur-sm text-white">
+              {product.status === ProductStatus.SOLDOUT
+                ? "已售完"
+                : "暫停販售"}
+            </div>
+          )}
+        </div>
 
-      {/* 商品信息 */}
-      <div className="mt-3 sm:mt-4 space-y-1 sm:space-y-2 p-2 sm:p-0">
-        <h3 className="text-base sm:text-lg font-medium truncate">
-          {product.name}
-        </h3>
-        <p className="text-sm text-muted line-clamp-2 min-h-[2.5rem]">
-          {product.description}
-        </p>
-
-        <div className="flex items-center justify-between pt-2">
-          <span className="text-base sm:text-lg font-bold">
-            NT$ {product.price}
-          </span>
+        {/* 商品資訊 */}
+        <div className="p-4">
+          <div className="flex justify-between mb-2">
+            <h3 className="text-lg font-medium line-clamp-1 group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+            <span className="font-medium text-primary whitespace-nowrap">
+              NT$ {product.price}
+            </span>
+          </div>
+          <p className="text-sm text-muted line-clamp-2 mb-4 min-h-[2.5rem]">
+            {product.description}
+          </p>
+          {/* 加入購物車按鈕 */}
           <button
             onClick={handleAddToCart}
-            className={`p-2 rounded-full transition-all duration-300 shadow-sm
-              ${
-                isHovered
-                  ? "opacity-100 translate-x-0 scale-100"
-                  : "opacity-0 translate-x-4 scale-95 sm:opacity-100 sm:translate-x-0 sm:scale-100"
-              }
-              bg-primary text-white hover:bg-primary-hover`}
+            disabled={product.status !== ProductStatus.ACTIVE}
+            className={`btn-primary w-full group/btn ${
+              product.status !== ProductStatus.ACTIVE ? "opacity-50" : ""
+            }`}
           >
-            <FaShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
+            <FaShoppingCart className="w-4 h-4 mr-2 transition-transform group-hover/btn:scale-110" />
+            加入購物車
           </button>
         </div>
       </div>
-
-      {/* 商品狀態標籤 */}
-      {product.status === ProductStatus.SOLDOUT && (
-        <div className="absolute top-2 left-2 bg-danger/90 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
-          售罄
-        </div>
-      )}
-      {product.isRecommended && (
-        <div className="absolute top-2 left-2 bg-primary/90 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm">
-          推薦
-        </div>
-      )}
     </Link>
   );
 };

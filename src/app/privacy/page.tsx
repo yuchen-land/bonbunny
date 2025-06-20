@@ -7,9 +7,7 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">1. 資料收集</h2>
           <div className="space-y-4 text-muted">
-            <p>
-              我們收集的個人資料包括但不限於：
-            </p>
+            <p>我們收集的個人資料包括但不限於：</p>
             <ul className="list-disc pl-6">
               <li>姓名</li>
               <li>聯絡電話</li>
@@ -37,9 +35,7 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">3. 資料保護</h2>
           <div className="space-y-4 text-muted">
-            <p>
-              我們採取適當的技術和組織措施來保護您的個人資料，包括：
-            </p>
+            <p>我們採取適當的技術和組織措施來保護您的個人資料，包括：</p>
             <ul className="list-disc pl-6">
               <li>使用加密技術保護資料傳輸</li>
               <li>定期更新安全系統</li>
@@ -52,9 +48,7 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">4. Cookie 使用</h2>
           <div className="space-y-4 text-muted">
-            <p>
-              我們使用 cookie 來改善您的購物體驗。Cookie 可能收集：
-            </p>
+            <p>我們使用 cookie 來改善您的購物體驗。Cookie 可能收集：</p>
             <ul className="list-disc pl-6">
               <li>購物車內容</li>
               <li>瀏覽歷史</li>
@@ -93,9 +87,12 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">7. 聯絡我們</h2>
           <p className="text-muted">
-            如對本隱私權政策有任何疑問，請聯絡我們：<br />
-            電話：02-2345-6789<br />
-            電子郵件：service@bonbunny.com<br />
+            如對本隱私權政策有任何疑問，請聯絡我們：
+            <br />
+            電話：02-2345-6789
+            <br />
+            電子郵件：service@bonbunny.com
+            <br />
             地址：台北市大安區甜點街123號
           </p>
         </section>

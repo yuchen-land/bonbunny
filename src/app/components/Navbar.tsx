@@ -3,7 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import { FaUser, FaHeart, FaShoppingCart, FaQuestionCircle } from "react-icons/fa";
+import {
+  FaUser,
+  FaHeart,
+  FaShoppingCart,
+  FaQuestionCircle,
+} from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdInfo, MdPhone } from "react-icons/md";
 import { useAuthStore } from "@/app/store/auth";
@@ -38,7 +43,10 @@ const Navbar = () => {
   // 處理點擊外部關閉下拉選單
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (categoryRef.current && !categoryRef.current.contains(event.target as Node)) {
+      if (
+        categoryRef.current &&
+        !categoryRef.current.contains(event.target as Node)
+      ) {
         setIsCategoryOpen(false);
       }
       if (infoRef.current && !infoRef.current.contains(event.target as Node)) {
@@ -63,13 +71,15 @@ const Navbar = () => {
             onClick={closeMenu}
           >
             <div className="h-10 flex items-center">
-              <Image 
+              {" "}
+              <Image
                 src="/logo.svg"
                 alt="BonBunny Logo"
                 width={160}
                 height={40}
                 className="w-auto h-full object-contain"
                 priority
+                unoptimized
               />
             </div>
           </Link>
@@ -157,7 +167,9 @@ const Navbar = () => {
                     className="flex items-center px-4 py-2 text-sm hover:bg-background-secondary hover:text-primary transition-colors"
                     onClick={() => setIsInfoOpen(false)}
                   >
-                    <span className="w-4 h-4 mr-2 flex items-center justify-center">🚚</span>
+                    <span className="w-4 h-4 mr-2 flex items-center justify-center">
+                      🚚
+                    </span>
                     運送說明
                   </Link>
                 </div>
@@ -165,8 +177,8 @@ const Navbar = () => {
             </div>
 
             {/* 熱門商品 */}
-            <Link 
-              href="/category/popular" 
+            <Link
+              href="/category/popular"
               className="nav-link relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all group"
             >
               <span className="relative">
@@ -178,16 +190,16 @@ const Navbar = () => {
             </Link>
 
             {/* 聯絡我們 */}
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="nav-link relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all"
             >
               聯絡我們
             </Link>
 
             {isAuthenticated && user?.role === "admin" && (
-              <Link 
-                href="/admin" 
+              <Link
+                href="/admin"
                 className="nav-link relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all"
               >
                 管理後台
@@ -343,7 +355,9 @@ const Navbar = () => {
                     }}
                   >
                     <div className="flex items-center">
-                      <span className="w-4 h-4 mr-2 flex items-center justify-center">🚚</span>
+                      <span className="w-4 h-4 mr-2 flex items-center justify-center">
+                        🚚
+                      </span>
                       運送說明
                     </div>
                   </Link>
@@ -351,8 +365,8 @@ const Navbar = () => {
               </div>
 
               {/* 熱門商品 */}
-              <Link 
-                href="/category/popular" 
+              <Link
+                href="/category/popular"
                 className="nav-link px-2 py-1 hover:bg-background-secondary rounded-md relative group"
                 onClick={closeMenu}
               >
@@ -363,7 +377,7 @@ const Navbar = () => {
                   </span>
                 </span>
               </Link>
-              
+
               {/* 商品分類 */}
               <div className="relative">
                 <button
@@ -392,9 +406,7 @@ const Navbar = () => {
                         setIsCategoryOpen(false);
                       }}
                     >
-                      <div className="flex items-center">
-                        {label}
-                      </div>
+                      <div className="flex items-center">{label}</div>
                     </Link>
                   ))}
                 </div>

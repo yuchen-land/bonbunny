@@ -39,7 +39,8 @@
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 
   /* 圓角 */
@@ -75,8 +76,11 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased min-h-screen;
-    background-image: 
-      radial-gradient(circle at center, rgba(249, 127, 127, 0.03) 0%, transparent 70%),
+    background-image: radial-gradient(
+        circle at center,
+        rgba(249, 127, 127, 0.03) 0%,
+        transparent 70%
+      ),
       linear-gradient(rgba(255, 236, 209, 0.05) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 236, 209, 0.05) 1px, transparent 1px);
     background-size: 100% 100%, 20px 20px, 20px 20px;
@@ -119,7 +123,11 @@
 
   .section {
     @apply py-16 sm:py-24;
-    background-image: radial-gradient(circle at center, rgba(249, 127, 127, 0.02) 0%, transparent 70%);
+    background-image: radial-gradient(
+      circle at center,
+      rgba(249, 127, 127, 0.02) 0%,
+      transparent 70%
+    );
   }
 
   .container {
@@ -148,7 +156,7 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-hover;
   }

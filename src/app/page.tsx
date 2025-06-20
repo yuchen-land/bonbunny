@@ -120,7 +120,8 @@ export default function Home() {
           >
             <h2 className="heading text-balance">精選系列</h2>
             <div className="w-12 h-0.5 bg-primary/30 mx-auto"></div>
-          </motion.div>          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          </motion.div>{" "}
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {categories.map((cat, index) => {
               const Icon = cat.icon;
               return (

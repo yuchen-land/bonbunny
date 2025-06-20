@@ -1,35 +1,42 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FaTruck, FaStore, FaBoxOpen, FaClock, FaShieldAlt, FaUsers } from "react-icons/fa";
+import {
+  FaTruck,
+  FaStore,
+  FaBoxOpen,
+  FaClock,
+  FaShieldAlt,
+  FaUsers,
+} from "react-icons/fa";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6 }
+  transition: { duration: 0.6 },
 };
 
 const features = [
   {
     icon: FaTruck,
     title: "專業冷藏配送",
-    description: "使用專業冷藏配送箱，確保甜點新鮮送達"
+    description: "使用專業冷藏配送箱，確保甜點新鮮送達",
   },
   {
     icon: FaClock,
     title: "多時段選擇",
-    description: "上午9-12點、下午2-5點，彈性配送時間"
+    description: "上午9-12點、下午2-5點，彈性配送時間",
   },
   {
     icon: FaShieldAlt,
     title: "品質保證",
-    description: "損壞包賠，退換貨無負擔"
+    description: "損壞包賠，退換貨無負擔",
   },
   {
     icon: FaUsers,
     title: "專業客服",
-    description: "貼心服務，即時回應您的需求"
-  }
+    description: "貼心服務，即時回應您的需求",
+  },
 ];
 
 export default function ShippingPage() {
@@ -38,13 +45,15 @@ export default function ShippingPage() {
       {/* Hero Section */}
       <section className="bg-primary/5 py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <motion.div 
+          <motion.div
             className="text-center max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-primary">運送服務</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-primary">
+              運送服務
+            </h1>
             <p className="text-lg text-foreground/80">
               我們提供專業的配送服務，讓您能享用最新鮮的甜點。
               無論是冷藏宅配還是門市自取，都能確保商品的最佳品質。
@@ -56,7 +65,7 @@ export default function ShippingPage() {
       {/* Features Section */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
-          <motion.div 
+          <motion.div
             className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -84,13 +93,13 @@ export default function ShippingPage() {
       {/* Shipping Methods Section */}
       <section className="py-16 md:py-24 bg-background-secondary">
         <div className="container mx-auto px-4">
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary"
             {...fadeIn}
           >
             配送方式
           </motion.h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             <motion.div
               className="bg-background p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
@@ -160,7 +169,7 @@ export default function ShippingPage() {
       {/* Special Services Section */}
       <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
-          <motion.h2 
+          <motion.h2
             className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary"
             {...fadeIn}
           >

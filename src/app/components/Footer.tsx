@@ -56,22 +56,34 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-4">網站導覽</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/category/cake" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/category/cake"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   蛋糕系列
                 </Link>
               </li>
               <li>
-                <Link href="/category/cookie" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/category/cookie"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   餅乾系列
                 </Link>
               </li>
               <li>
-                <Link href="/category/bread" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/category/bread"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   麵包系列
                 </Link>
               </li>
               <li>
-                <Link href="/category/gift_set" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/category/gift_set"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   禮盒系列
                 </Link>
               </li>
@@ -83,27 +95,42 @@ export default function Footer() {
             <h3 className="font-bold text-lg mb-4">顧客服務</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/about" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/about"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   關於我們
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/faq"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   常見問題
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/shipping"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   運送說明
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/terms"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   服務條款
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-muted hover:text-primary transition-colors">
+                <Link
+                  href="/privacy"
+                  className="text-muted hover:text-primary transition-colors"
+                >
                   隱私權政策
                 </Link>
               </li>
@@ -120,7 +147,10 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3 text-muted">
                 <MdEmail className="h-5 w-5 flex-shrink-0" />
-                <a href="mailto:service@bonbunny.com" className="hover:text-primary transition-colors">
+                <a
+                  href="mailto:service@bonbunny.com"
+                  className="hover:text-primary transition-colors"
+                >
                   service@bonbunny.com
                 </a>
               </li>

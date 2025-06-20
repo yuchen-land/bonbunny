@@ -71,9 +71,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           {/* 商品狀態標籤 */}
           {product.status !== ProductStatus.ACTIVE && (
             <div className="absolute bottom-3 right-3 px-2 py-1 text-xs rounded bg-black/50 backdrop-blur-sm text-white">
-              {product.status === ProductStatus.SOLDOUT
-                ? "已售完"
-                : "暫停販售"}
+              {product.status === ProductStatus.SOLDOUT ? "已售完" : "暫停販售"}
             </div>
           )}
         </div>

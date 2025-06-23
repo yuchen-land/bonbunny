@@ -64,26 +64,24 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
+          {/* Logo */}{" "}
           <Link
             href="/"
             className="flex items-center py-2 hover:opacity-80 transition-opacity"
             onClick={closeMenu}
           >
             <div className="h-10 flex items-center">
-              {" "}
               <Image
                 src="/logo.svg"
                 alt="BonBunny Logo"
                 width={160}
                 height={40}
-                className="w-auto h-full object-contain"
+                className="w-auto h-full object-contain relative z-10"
+                style={{ color: "currentColor" }}
                 priority
-                unoptimized
               />
             </div>
           </Link>
-
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {/* 商品分類 */}
@@ -206,7 +204,6 @@ const Navbar = () => {
               </Link>
             )}
           </div>
-
           {/* Desktop User Actions */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Favorites */}
@@ -259,7 +256,6 @@ const Navbar = () => {
               </Link>
             )}
           </div>
-
           {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2 nav-link rounded-md hover:bg-background-secondary"

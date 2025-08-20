@@ -70,7 +70,7 @@ export interface Order {
   createdAt: string;
 }
 
-export type PaymentMethod = "credit_card" | "line_pay" | "cash_on_delivery";
+export type PaymentMethod = "bank_transfer";
 
 export interface User {
   id: string;

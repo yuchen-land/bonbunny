@@ -164,7 +164,7 @@ const CheckoutPage: FC = () => {
   const router = useRouter();
   const { items, total } = useCartStore();
   const [paymentMethod, setPaymentMethod] =
-    useState<PaymentMethod>("credit_card");
+    useState<PaymentMethod>("bank_transfer");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
     fullName: "",
@@ -358,24 +358,10 @@ const CheckoutPage: FC = () => {
             <PaymentMethodContainer>
               <PaymentMethodButton
                 type="button"
-                selected={paymentMethod === "credit_card"}
-                onClick={() => setPaymentMethod("credit_card")}
+                selected={paymentMethod === "bank_transfer"}
+                onClick={() => setPaymentMethod("bank_transfer")}
               >
-                信用卡
-              </PaymentMethodButton>
-              <PaymentMethodButton
-                type="button"
-                selected={paymentMethod === "line_pay"}
-                onClick={() => setPaymentMethod("line_pay")}
-              >
-                Line Pay
-              </PaymentMethodButton>
-              <PaymentMethodButton
-                type="button"
-                selected={paymentMethod === "cash_on_delivery"}
-                onClick={() => setPaymentMethod("cash_on_delivery")}
-              >
-                貨到付款
+                銀行轉帳（匯款）
               </PaymentMethodButton>
             </PaymentMethodContainer>
           </Section>

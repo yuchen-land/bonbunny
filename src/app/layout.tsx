@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import { Metadata } from "next";
+import { Metadata, Viewport } from "next";
 import StyledComponentsRegistry from "./lib/registry";
 import ClientLayout from "@/app/ClientLayout";
 import "./globals.css";
@@ -37,8 +37,13 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
   themeColor: "#FFFFFF",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
 };
 
 export default function RootLayout({

@@ -174,35 +174,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Newsletter Section */}
-      <section className="section bg-background-secondary/20">
-        <div className="container">
-          <div className="glass card max-w-4xl mx-auto p-8 md:p-12">
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6 }}
-            >
-              <h2 className="heading text-balance mb-4">訂閱我們</h2>
-              <p className="subheading mb-8">
-                訂閱電子報，獲得最新優惠和甜點資訊
-              </p>
-              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="請輸入您的 Email"
-                  className="flex-1 rounded-lg border border-border/50 px-4 py-2 bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
-                />
-                <button className="btn-primary whitespace-nowrap">
-                  立即訂閱
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 }

@@ -264,7 +264,10 @@ const CheckoutPage: FC = () => {
       }
 
       // 儲存訂單資料到 localStorage（用於確認頁面顯示）
-      localStorage.setItem(`order_${result.order.id}`, JSON.stringify(result.order));
+      localStorage.setItem(
+        `order_${result.order.id}`,
+        JSON.stringify(result.order)
+      );
 
       // 清空購物車
       // clearCart(); // 如果購物車 store 有此方法的話
@@ -273,7 +276,11 @@ const CheckoutPage: FC = () => {
       router.push(`/checkout/confirmation/${result.order.id}`);
     } catch (error) {
       console.error("Order creation error:", error);
-      alert(error instanceof Error ? error.message : "創建訂單時發生錯誤，請稍後再試。");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "創建訂單時發生錯誤，請稍後再試。"
+      );
     }
   };
 

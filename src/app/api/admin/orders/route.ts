@@ -16,7 +16,10 @@ export async function GET(request: Request) {
     // Verify admin permissions
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized request" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized request" },
+        { status: 401 }
+      );
     }
 
     const token = authHeader.split(" ")[1];
@@ -24,7 +27,10 @@ export async function GET(request: Request) {
     const adminUser = await db.getUserById(decoded.userId);
 
     if (!adminUser?.isAdmin) {
-      return NextResponse.json({ error: "No admin permissions" }, { status: 403 });
+      return NextResponse.json(
+        { error: "No admin permissions" },
+        { status: 403 }
+      );
     }
 
     // Get all orders
@@ -53,7 +59,10 @@ export async function GET(request: Request) {
     return NextResponse.json(ordersWithUserInfo);
   } catch (error) {
     console.error("Get orders error:", error);
-    return NextResponse.json({ error: "Failed to get order list" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to get order list" },
+      { status: 500 }
+    );
   }
 }
 
@@ -63,7 +72,10 @@ export async function PUT(request: Request) {
     // Verify admin permissions
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized request" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized request" },
+        { status: 401 }
+      );
     }
 
     const token = authHeader.split(" ")[1];
@@ -71,7 +83,10 @@ export async function PUT(request: Request) {
     const adminUser = await db.getUserById(decoded.userId);
 
     if (!adminUser?.isAdmin) {
-      return NextResponse.json({ error: "No admin permissions" }, { status: 403 });
+      return NextResponse.json(
+        { error: "No admin permissions" },
+        { status: 403 }
+      );
     }
 
     // Validate request parameters
@@ -102,6 +117,9 @@ export async function PUT(request: Request) {
     }
 
     console.error("Update order error:", error);
-    return NextResponse.json({ error: "Failed to update order status" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update order status" },
+      { status: 500 }
+    );
   }
 }

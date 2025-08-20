@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { useParams } from "next/navigation";
@@ -118,7 +118,40 @@ const ProductDetail: FC = () => {
   const params = useParams();
   const addItem = useCartStore((state) => state.addItem);
 
-  const product = mockProducts.find((p) => p.id === params.id);
+  // Fetch product from database
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/products/${params.id}`);
+        if (response.ok) {
+          const productData = await response.json();
+          setProduct(productData);
+        } else {
+          // Fallback to mock data if API fails
+          const mockProduct = mockProducts.find((p) => p.id === params.id);
+          setProduct(mockProduct || null);
+        }
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
+        // Fallback to mock data on error
+        const mockProduct = mockProducts.find((p) => p.id === params.id);
+        setProduct(mockProduct || null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [params.id]);
+
+  if (loading) {
+    return <Container>載入中...</Container>;
+  }
 
   if (!product) {
     return <Container>找不到此商品</Container>;

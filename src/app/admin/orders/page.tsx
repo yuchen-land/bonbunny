@@ -43,7 +43,10 @@ const OrdersPage: FC = () => {
     }
   };
 
-  const handleStatusChange = async (orderId: string, newStatus: Order["status"]) => {
+  const handleStatusChange = async (
+    orderId: string,
+    newStatus: Order["status"]
+  ) => {
     try {
       const response = await fetch(`/api/admin/orders?orderId=${orderId}`, {
         method: "PUT",

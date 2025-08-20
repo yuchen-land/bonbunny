@@ -6,19 +6,21 @@ import { ProductCategory, ProductStatus } from "@/app/types";
 
 // Schema for validating order data
 const createOrderSchema = z.object({
-  items: z.array(z.object({
-    id: z.string(),
-    name: z.string(),
-    price: z.number(),
-    quantity: z.number(),
-    images: z.array(z.string()),
-    category: z.nativeEnum(ProductCategory),
-    description: z.string(),
-    status: z.nativeEnum(ProductStatus),
-    stock: z.number(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-  })),
+  items: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      price: z.number(),
+      quantity: z.number(),
+      images: z.array(z.string()),
+      category: z.nativeEnum(ProductCategory),
+      description: z.string(),
+      status: z.nativeEnum(ProductStatus),
+      stock: z.number(),
+      createdAt: z.string(),
+      updatedAt: z.string(),
+    })
+  ),
   shippingInfo: z.object({
     userId: z.string().optional(),
     fullName: z.string(),
@@ -42,10 +44,13 @@ export async function POST(request: Request) {
     const validatedData = createOrderSchema.parse(body);
 
     // Generate unique order ID
-    const orderId = `ORD${Date.now()}${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
+    const orderId = `ORD${Date.now()}${Math.random()
+      .toString(36)
+      .substr(2, 5)
+      .toUpperCase()}`;
 
     // Convert items to CartItem type
-    const cartItems: CartItem[] = validatedData.items.map(item => ({
+    const cartItems: CartItem[] = validatedData.items.map((item) => ({
       ...item,
       // Ensure all required fields are present
     }));
@@ -66,24 +71,32 @@ export async function POST(request: Request) {
     // Save to database
     const savedOrder = await db.createOrder(order);
 
-    return NextResponse.json({
-      success: true,
-      order: savedOrder,
-      message: "Order created successfully"
-    }, { status: 201 });
-
+    return NextResponse.json(
+      {
+        success: true,
+        order: savedOrder,
+        message: "Order created successfully",
+      },
+      { status: 201 }
+    );
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: "Data validation failed",
-        details: error.errors
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: "Data validation failed",
+          details: error.errors,
+        },
+        { status: 400 }
+      );
     }
 
     console.error("Create order error:", error);
-    return NextResponse.json({
-      error: "Failed to create order"
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Failed to create order",
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -97,9 +110,12 @@ export async function GET(request: Request) {
       // Get single order
       const order = await db.getOrderById(orderId);
       if (!order) {
-        return NextResponse.json({
-          error: "Order not found"
-        }, { status: 404 });
+        return NextResponse.json(
+          {
+            error: "Order not found",
+          },
+          { status: 404 }
+        );
       }
       return NextResponse.json(order);
     } else {
@@ -107,11 +123,13 @@ export async function GET(request: Request) {
       const orders = await db.getOrders();
       return NextResponse.json(orders);
     }
-
   } catch (error) {
     console.error("Get order error:", error);
-    return NextResponse.json({
-      error: "Failed to get order"
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Failed to get order",
+      },
+      { status: 500 }
+    );
   }
 }

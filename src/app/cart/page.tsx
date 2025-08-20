@@ -1,11 +1,11 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 import { useCartStore } from "../store/cart";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaTag } from "react-icons/fa";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -199,6 +199,60 @@ const CheckoutButton = styled.button`
 
 const CartPage: FC = () => {
   const { items, updateQuantity, removeItem, total } = useCartStore();
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<any>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponError, setCouponError] = useState("");
+  const [discountAmount, setDiscountAmount] = useState(0);
+
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) {
+      setCouponError("請輸入優惠券代碼");
+      return;
+    }
+
+    setCouponLoading(true);
+    setCouponError("");
+
+    try {
+      const response = await fetch("/api/coupons", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: couponCode,
+          orderTotal: total,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "套用優惠券失敗");
+      }
+
+      setAppliedCoupon(result.coupon);
+      setDiscountAmount(result.discountAmount);
+      setCouponCode("");
+      setCouponError("");
+    } catch (error) {
+      console.error("Apply coupon error:", error);
+      setCouponError(
+        error instanceof Error ? error.message : "套用優惠券失敗"
+      );
+    } finally {
+      setCouponLoading(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    setDiscountAmount(0);
+    setCouponError("");
+  };
+
+  const finalTotal = total - discountAmount;
 
   if (items.length === 0) {
     return (
@@ -258,10 +312,89 @@ const CartPage: FC = () => {
           <SummaryLabel>運費</SummaryLabel>
           <SummaryValue>NT$ 0</SummaryValue>
         </SummaryRow>
+        
+        {/* 優惠券區域 */}
+        <div style={{ margin: "1rem 0", padding: "1rem", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
+          {!appliedCoupon ? (
+            <>
+              <div style={{ marginBottom: "0.5rem", fontWeight: "bold", color: "#333", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <FaTag />
+                輸入優惠券代碼
+              </div>
+              <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                <input
+                  type="text"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  placeholder="請輸入優惠券代碼"
+                  style={{
+                    flex: 1,
+                    padding: "0.5rem",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
+                  }}
+                  disabled={couponLoading}
+                />
+                <button
+                  onClick={applyCoupon}
+                  disabled={couponLoading || !couponCode.trim()}
+                  style={{
+                    padding: "0.5rem 1rem",
+                    backgroundColor: "#ff6b6b",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "4px",
+                    cursor: couponLoading ? "not-allowed" : "pointer",
+                    opacity: couponLoading || !couponCode.trim() ? 0.6 : 1,
+                  }}
+                >
+                  {couponLoading ? "驗證中..." : "套用"}
+                </button>
+              </div>
+              {couponError && (
+                <div style={{ color: "#dc3545", fontSize: "0.875rem" }}>
+                  {couponError}
+                </div>
+              )}
+            </>
+          ) : (
+            <div>
+              <div style={{ marginBottom: "0.5rem", fontWeight: "bold", color: "#28a745", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <FaTag />
+                已套用優惠券：{appliedCoupon.code}
+              </div>
+              <div style={{ fontSize: "0.875rem", color: "#6c757d", marginBottom: "0.5rem" }}>
+                {appliedCoupon.name}
+              </div>
+              <button
+                onClick={removeCoupon}
+                style={{
+                  padding: "0.25rem 0.5rem",
+                  backgroundColor: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "0.75rem",
+                }}
+              >
+                移除優惠券
+              </button>
+            </div>
+          )}
+        </div>
+
+        {appliedCoupon && (
+          <SummaryRow>
+            <SummaryLabel>優惠折扣</SummaryLabel>
+            <SummaryValue style={{ color: "#28a745" }}>-NT$ {discountAmount}</SummaryValue>
+          </SummaryRow>
+        )}
+        
         <SummaryRow>
           <SummaryLabel>總計</SummaryLabel>
-          <SummaryValue className="total">NT$ {total}</SummaryValue>
-        </SummaryRow>{" "}
+          <SummaryValue className="total">NT$ {finalTotal}</SummaryValue>
+        </SummaryRow>
         <CheckoutButton onClick={() => (window.location.href = "/checkout")}>
           前往結帳
         </CheckoutButton>

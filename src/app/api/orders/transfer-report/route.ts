@@ -21,9 +21,12 @@ export async function POST(request: Request) {
     // Get order
     const order = await db.getOrderById(validatedData.orderId);
     if (!order) {
-      return NextResponse.json({
-        error: "Order not found"
-      }, { status: 404 });
+      return NextResponse.json(
+        {
+          error: "Order not found",
+        },
+        { status: 404 }
+      );
     }
 
     // Update order payment information
@@ -37,7 +40,7 @@ export async function POST(request: Request) {
         receiptUrl: validatedData.receiptFile,
         isReported: true,
         reportedAt: new Date().toISOString(),
-      }
+      },
     };
 
     // Update order
@@ -46,29 +49,37 @@ export async function POST(request: Request) {
     });
 
     if (!updatedOrder) {
-      return NextResponse.json({
-        error: "Failed to update order"
-      }, { status: 500 });
+      return NextResponse.json(
+        {
+          error: "Failed to update order",
+        },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({
       success: true,
       message: "Transfer information submitted successfully",
-      order: updatedOrder
+      order: updatedOrder,
     });
-
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({
-        error: "Data validation failed",
-        details: error.errors
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: "Data validation failed",
+          details: error.errors,
+        },
+        { status: 400 }
+      );
     }
 
     console.error("Transfer report error:", error);
-    return NextResponse.json({
-      error: "Failed to submit transfer information"
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Failed to submit transfer information",
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -79,27 +90,35 @@ export async function GET(request: Request) {
     const orderId = searchParams.get("orderId");
 
     if (!orderId) {
-      return NextResponse.json({
-        error: "Missing order ID"
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: "Missing order ID",
+        },
+        { status: 400 }
+      );
     }
 
     const order = await db.getOrderById(orderId);
     if (!order) {
-      return NextResponse.json({
-        error: "Order not found"
-      }, { status: 404 });
+      return NextResponse.json(
+        {
+          error: "Order not found",
+        },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({
       orderId,
       transferDetails: order.paymentInfo.transferDetails || null,
     });
-
   } catch (error) {
     console.error("Get transfer report error:", error);
-    return NextResponse.json({
-      error: "Failed to get transfer information"
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Failed to get transfer information",
+      },
+      { status: 500 }
+    );
   }
 }

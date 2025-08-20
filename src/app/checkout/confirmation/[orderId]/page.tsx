@@ -85,7 +85,7 @@ const CopyButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.8rem;
-  
+
   &:hover {
     background-color: #5a6268;
   }
@@ -145,11 +145,11 @@ const SubmitButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   margin: 1rem auto 0;
-  
+
   &:hover {
     background-color: #218838;
   }
-  
+
   &:disabled {
     background-color: #6c757d;
     cursor: not-allowed;
@@ -202,17 +202,18 @@ interface TransferReportData {
 const OrderConfirmationPage: FC = () => {
   const params = useParams();
   const orderId = params.orderId as string;
-  
+
   // 模擬從 localStorage 或 API 獲取訂單資料
   const [orderData, setOrderData] = useState<any>(null);
   const [isTransferReported, setIsTransferReported] = useState(false);
-  const [transferReportData, setTransferReportData] = useState<TransferReportData>({
-    transferDate: '',
-    transferTime: '',
-    transferAmount: '',
-    transferAccount: '',
-    receiptFile: null
-  });
+  const [transferReportData, setTransferReportData] =
+    useState<TransferReportData>({
+      transferDate: "",
+      transferTime: "",
+      transferAmount: "",
+      transferAccount: "",
+      receiptFile: null,
+    });
 
   useEffect(() => {
     const loadOrderData = async () => {
@@ -222,7 +223,7 @@ const OrderConfirmationPage: FC = () => {
         if (savedOrder) {
           const order = JSON.parse(savedOrder);
           setOrderData(order);
-          
+
           // 檢查是否已經提交過轉帳回報
           if (order.paymentInfo?.transferDetails?.isReported) {
             setIsTransferReported(true);
@@ -235,7 +236,7 @@ const OrderConfirmationPage: FC = () => {
         if (response.ok) {
           const order = await response.json();
           setOrderData(order);
-          
+
           // 檢查是否已經提交過轉帳回報
           if (order.paymentInfo?.transferDetails?.isReported) {
             setIsTransferReported(true);
@@ -244,19 +245,19 @@ const OrderConfirmationPage: FC = () => {
           // 如果 API 也沒有找到，設置默認資料
           setOrderData({
             id: orderId,
-            paymentInfo: { method: 'bank_transfer' },
+            paymentInfo: { method: "bank_transfer" },
             total: 1000,
-            status: 'pending'
+            status: "pending",
           });
         }
       } catch (error) {
-        console.error('Load order error:', error);
+        console.error("Load order error:", error);
         // 發生錯誤時設置默認資料
         setOrderData({
           id: orderId,
-          paymentInfo: { method: 'bank_transfer' },
+          paymentInfo: { method: "bank_transfer" },
           total: 1000,
-          status: 'pending'
+          status: "pending",
         });
       }
     };
@@ -265,42 +266,46 @@ const OrderConfirmationPage: FC = () => {
   }, [orderId]);
 
   const bankInfo = {
-    bankName: '台灣銀行',
-    bankCode: '004',
-    accountNumber: '123-456-789012',
-    accountName: 'BonBunny 甜點工作室',
+    bankName: "台灣銀行",
+    bankCode: "004",
+    accountNumber: "123-456-789012",
+    accountName: "BonBunny 甜點工作室",
   };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert('已複製到剪貼簿');
+    alert("已複製到剪貼簿");
   };
 
-  const handleTransferReportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTransferReportChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { name, value, files } = e.target;
-    
-    if (name === 'receiptFile' && files) {
-      setTransferReportData(prev => ({
+
+    if (name === "receiptFile" && files) {
+      setTransferReportData((prev) => ({
         ...prev,
-        receiptFile: files[0]
+        receiptFile: files[0],
       }));
     } else {
-      setTransferReportData(prev => ({
+      setTransferReportData((prev) => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
 
   const handleTransferReportSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // 驗證必填欄位
-    if (!transferReportData.transferDate || 
-        !transferReportData.transferTime || 
-        !transferReportData.transferAmount ||
-        !transferReportData.transferAccount) {
-      alert('請填寫所有必填欄位');
+    if (
+      !transferReportData.transferDate ||
+      !transferReportData.transferTime ||
+      !transferReportData.transferAmount ||
+      !transferReportData.transferAccount
+    ) {
+      alert("請填寫所有必填欄位");
       return;
     }
 
@@ -333,15 +338,18 @@ const OrderConfirmationPage: FC = () => {
 
       // 模擬提交成功
       setIsTransferReported(true);
-      
+
       // 清除 localStorage 中的臨時資料
       localStorage.removeItem(`transfer_report_${orderId}`);
-      
-      alert('匯款資訊已成功回報！我們將在收到款項後盡快處理您的訂單。');
-      
+
+      alert("匯款資訊已成功回報！我們將在收到款項後盡快處理您的訂單。");
     } catch (error) {
-      console.error('Transfer report submission error:', error);
-      alert(error instanceof Error ? error.message : '提交轉帳資訊時發生錯誤，請稍後再試。');
+      console.error("Transfer report submission error:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "提交轉帳資訊時發生錯誤，請稍後再試。"
+      );
     }
   };
 
@@ -356,17 +364,23 @@ const OrderConfirmationPage: FC = () => {
       </SuccessIcon>
       <Title>訂單建立成功！</Title>
       <Message>感謝您的購買。我們將盡快處理您的訂單。</Message>
-      
+
       <OrderId>
         訂單編號：<span>{orderId}</span>
       </OrderId>
 
       <BankInfoSection>
         <BankInfoTitle>💰 匯款資訊</BankInfoTitle>
-        <p style={{ textAlign: 'center', marginBottom: '1rem', color: '#856404' }}>
+        <p
+          style={{
+            textAlign: "center",
+            marginBottom: "1rem",
+            color: "#856404",
+          }}
+        >
           請使用以下銀行資訊進行轉帳，並在轉帳後填寫下方回報表單
         </p>
-        
+
         <BankDetail>
           <BankLabel>銀行名稱：</BankLabel>
           <BankValue>{bankInfo.bankName}</BankValue>
@@ -374,7 +388,7 @@ const OrderConfirmationPage: FC = () => {
             <FaCopy /> 複製
           </CopyButton>
         </BankDetail>
-        
+
         <BankDetail>
           <BankLabel>銀行代碼：</BankLabel>
           <BankValue>{bankInfo.bankCode}</BankValue>
@@ -382,7 +396,7 @@ const OrderConfirmationPage: FC = () => {
             <FaCopy /> 複製
           </CopyButton>
         </BankDetail>
-        
+
         <BankDetail>
           <BankLabel>帳戶號碼：</BankLabel>
           <BankValue>{bankInfo.accountNumber}</BankValue>
@@ -390,7 +404,7 @@ const OrderConfirmationPage: FC = () => {
             <FaCopy /> 複製
           </CopyButton>
         </BankDetail>
-        
+
         <BankDetail>
           <BankLabel>戶名：</BankLabel>
           <BankValue>{bankInfo.accountName}</BankValue>
@@ -398,13 +412,15 @@ const OrderConfirmationPage: FC = () => {
             <FaCopy /> 複製
           </CopyButton>
         </BankDetail>
-        
+
         <BankDetail>
           <BankLabel>轉帳金額：</BankLabel>
-          <BankValue style={{ color: '#ff6b6b', fontWeight: 'bold' }}>
+          <BankValue style={{ color: "#ff6b6b", fontWeight: "bold" }}>
             NT$ {orderData.total?.toLocaleString()}
           </BankValue>
-          <CopyButton onClick={() => copyToClipboard(orderData.total?.toString())}>
+          <CopyButton
+            onClick={() => copyToClipboard(orderData.total?.toString())}
+          >
             <FaCopy /> 複製
           </CopyButton>
         </BankDetail>
@@ -413,10 +429,16 @@ const OrderConfirmationPage: FC = () => {
       {!isTransferReported && (
         <TransferReportSection>
           <TransferReportTitle>📋 匯款回報</TransferReportTitle>
-          <p style={{ textAlign: 'center', marginBottom: '1rem', color: '#004085' }}>
+          <p
+            style={{
+              textAlign: "center",
+              marginBottom: "1rem",
+              color: "#004085",
+            }}
+          >
             完成轉帳後，請填寫以下資訊協助我們核對款項
           </p>
-          
+
           <form onSubmit={handleTransferReportSubmit}>
             <FormGroup>
               <Label>轉帳日期 *</Label>
@@ -428,7 +450,7 @@ const OrderConfirmationPage: FC = () => {
                 required
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label>轉帳時間 *</Label>
               <Input
@@ -439,7 +461,7 @@ const OrderConfirmationPage: FC = () => {
                 required
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label>轉帳金額 *</Label>
               <Input
@@ -451,7 +473,7 @@ const OrderConfirmationPage: FC = () => {
                 required
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label>轉出帳號後五碼 *</Label>
               <Input
@@ -464,7 +486,7 @@ const OrderConfirmationPage: FC = () => {
                 required
               />
             </FormGroup>
-            
+
             <FormGroup>
               <Label>轉帳收據（選填）</Label>
               <FileInput
@@ -474,7 +496,7 @@ const OrderConfirmationPage: FC = () => {
                 onChange={handleTransferReportChange}
               />
             </FormGroup>
-            
+
             <SubmitButton type="submit">
               <FaUpload /> 提交匯款資訊
             </SubmitButton>
@@ -485,19 +507,16 @@ const OrderConfirmationPage: FC = () => {
       {isTransferReported && (
         <TransferReportSection>
           <TransferReportTitle>✅ 匯款資訊已回報</TransferReportTitle>
-          <p style={{ textAlign: 'center', color: '#004085' }}>
-            我們已收到您的匯款資訊，將在 1-2 個工作天內核對款項並開始處理您的訂單。
+          <p style={{ textAlign: "center", color: "#004085" }}>
+            我們已收到您的匯款資訊，將在 1-2
+            個工作天內核對款項並開始處理您的訂單。
           </p>
         </TransferReportSection>
       )}
 
       <ButtonContainer>
-        <HomeButton href="/">
-          返回首頁
-        </HomeButton>
-        <CheckOrderButton href="/profile">
-          查看訂單狀態
-        </CheckOrderButton>
+        <HomeButton href="/">返回首頁</HomeButton>
+        <CheckOrderButton href="/profile">查看訂單狀態</CheckOrderButton>
       </ButtonContainer>
     </Container>
   );

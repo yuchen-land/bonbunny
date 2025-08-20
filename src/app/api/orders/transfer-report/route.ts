@@ -2,31 +2,31 @@ import { NextResponse } from "next/server";
 import { db } from "@/app/lib/db";
 import { z } from "zod";
 
-// 驗證轉帳回報資料的 schema
+// Schema for validating transfer report data
 const transferReportSchema = z.object({
   orderId: z.string(),
   transferDate: z.string(),
   transferTime: z.string(),
   transferAmount: z.string(),
   transferAccount: z.string(),
-  receiptFile: z.string().optional(), // Base64 編碼的檔案或檔案 URL
+  receiptFile: z.string().optional(), // Base64 encoded file or file URL
 });
 
-// 提交轉帳回報
+// Submit transfer report
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validatedData = transferReportSchema.parse(body);
 
-    // 獲取訂單
+    // Get order
     const order = await db.getOrderById(validatedData.orderId);
     if (!order) {
       return NextResponse.json({
-        error: "找不到該訂單"
+        error: "Order not found"
       }, { status: 404 });
     }
 
-    // 更新訂單的付款資訊
+    // Update order payment information
     const updatedPaymentInfo = {
       ...order.paymentInfo,
       transferDetails: {
@@ -40,39 +40,39 @@ export async function POST(request: Request) {
       }
     };
 
-    // 更新訂單
+    // Update order
     const updatedOrder = await db.updateOrder(validatedData.orderId, {
       paymentInfo: updatedPaymentInfo,
     });
 
     if (!updatedOrder) {
       return NextResponse.json({
-        error: "更新訂單失敗"
+        error: "Failed to update order"
       }, { status: 500 });
     }
 
     return NextResponse.json({
       success: true,
-      message: "轉帳資訊提交成功",
+      message: "Transfer information submitted successfully",
       order: updatedOrder
     });
 
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({
-        error: "資料驗證失敗",
+        error: "Data validation failed",
         details: error.errors
       }, { status: 400 });
     }
 
     console.error("Transfer report error:", error);
     return NextResponse.json({
-      error: "提交轉帳資訊失敗"
+      error: "Failed to submit transfer information"
     }, { status: 500 });
   }
 }
 
-// 獲取轉帳回報資訊
+// Get transfer report information
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -80,14 +80,14 @@ export async function GET(request: Request) {
 
     if (!orderId) {
       return NextResponse.json({
-        error: "缺少訂單ID"
+        error: "Missing order ID"
       }, { status: 400 });
     }
 
     const order = await db.getOrderById(orderId);
     if (!order) {
       return NextResponse.json({
-        error: "找不到該訂單"
+        error: "Order not found"
       }, { status: 404 });
     }
 
@@ -99,7 +99,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("Get transfer report error:", error);
     return NextResponse.json({
-      error: "獲取轉帳資訊失敗"
+      error: "Failed to get transfer information"
     }, { status: 500 });
   }
 }

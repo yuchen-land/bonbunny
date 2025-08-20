@@ -4,7 +4,7 @@ import { z } from "zod";
 import type { Order, ShippingInfo, CartItem } from "@/app/types";
 import { ProductCategory, ProductStatus } from "@/app/types";
 
-// 驗證訂單資料的 schema
+// Schema for validating order data
 const createOrderSchema = z.object({
   items: z.array(z.object({
     id: z.string(),
@@ -35,22 +35,22 @@ const createOrderSchema = z.object({
   total: z.number(),
 });
 
-// 創建訂單
+// Create order
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validatedData = createOrderSchema.parse(body);
 
-    // 生成唯一訂單ID
+    // Generate unique order ID
     const orderId = `ORD${Date.now()}${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
 
-    // 轉換 items 為 CartItem 類型
+    // Convert items to CartItem type
     const cartItems: CartItem[] = validatedData.items.map(item => ({
       ...item,
-      // 確保所有必要欄位都存在
+      // Ensure all required fields are present
     }));
 
-    // 創建訂單物件
+    // Create order object
     const order: Order = {
       id: orderId,
       items: cartItems,
@@ -63,47 +63,47 @@ export async function POST(request: Request) {
       createdAt: new Date().toISOString(),
     };
 
-    // 保存到資料庫
+    // Save to database
     const savedOrder = await db.createOrder(order);
 
     return NextResponse.json({
       success: true,
       order: savedOrder,
-      message: "訂單創建成功"
+      message: "Order created successfully"
     }, { status: 201 });
 
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({
-        error: "資料驗證失敗",
+        error: "Data validation failed",
         details: error.errors
       }, { status: 400 });
     }
 
     console.error("Create order error:", error);
     return NextResponse.json({
-      error: "創建訂單失敗"
+      error: "Failed to create order"
     }, { status: 500 });
   }
 }
 
-// 獲取訂單（根據 orderId 查詢參數）
+// Get orders (based on orderId query parameter)
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const orderId = searchParams.get("orderId");
 
     if (orderId) {
-      // 獲取單一訂單
+      // Get single order
       const order = await db.getOrderById(orderId);
       if (!order) {
         return NextResponse.json({
-          error: "找不到該訂單"
+          error: "Order not found"
         }, { status: 404 });
       }
       return NextResponse.json(order);
     } else {
-      // 獲取所有訂單（需要管理員權限的情況下使用）
+      // Get all orders (used when admin permissions are required)
       const orders = await db.getOrders();
       return NextResponse.json(orders);
     }
@@ -111,7 +111,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("Get order error:", error);
     return NextResponse.json({
-      error: "獲取訂單失敗"
+      error: "Failed to get order"
     }, { status: 500 });
   }
 }

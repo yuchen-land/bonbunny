@@ -54,10 +54,22 @@ export interface ShippingInfo {
 }
 
 export interface PaymentInfo {
-  cardNumber: string;
-  cardHolder: string;
-  expiryDate: string;
-  cvv: string;
+  method: PaymentMethod;
+  // 信用卡相關欄位（保留但設為可選）
+  cardNumber?: string;
+  cardHolder?: string;
+  expiryDate?: string;
+  cvv?: string;
+  // 銀行轉帳相關欄位
+  transferDetails?: {
+    transferDate?: string;
+    transferTime?: string;
+    transferAmount?: number;
+    transferAccount?: string; // 轉出帳號後五碼
+    receiptUrl?: string; // 收據圖片 URL
+    isReported?: boolean; // 是否已回報
+    reportedAt?: string; // 回報時間
+  };
 }
 
 export interface Order {

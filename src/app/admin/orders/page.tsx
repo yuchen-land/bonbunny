@@ -1,58 +1,140 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { FiEye } from "react-icons/fi";
 import AdminLayout from "../components/AdminLayout";
 import { Order, ProductCategory, ProductStatus } from "@/app/types";
-
-// 模擬訂單數據
-const mockOrders: Order[] = [
-  {
-    id: "ORD001",
-    items: [
-      {
-        id: "1",
-        name: "草莓蛋糕",
-        description: "新鮮草莓與奶油的完美結合",
-        price: 580,
-        images: ["/images/strawberry-cake.jpg"],
-        category: ProductCategory.CAKE,
-        status: ProductStatus.ACTIVE,
-        stock: 10,
-        quantity: 1,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    ],
-    shippingInfo: {
-      fullName: "王小明",
-      email: "wang@example.com",
-      phone: "0912345678",
-      address: {
-        street: "中山路 1 號",
-        city: "taipei",
-        district: "中正區",
-        postalCode: "100",
-      },
-    },
-    paymentInfo: {},
-    status: "pending",
-    total: 580,
-    createdAt: "2025-06-19T10:00:00.000Z",
-  },
-];
+import { useAuthStore } from "@/app/store/auth";
 
 const OrdersPage: FC = () => {
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { token } = useAuthStore();
 
-  const handleStatusChange = (orderId: string, newStatus: Order["status"]) => {
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
-    );
+  // 載入訂單資料
+  useEffect(() => {
+    loadOrders();
+  }, []);
+
+  const loadOrders = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch("/api/admin/orders", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("無法載入訂單資料");
+      }
+
+      const data = await response.json();
+      setOrders(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "載入訂單失敗");
+      console.error("Load orders error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleStatusChange = async (orderId: string, newStatus: Order["status"]) => {
+    try {
+      const response = await fetch(`/api/admin/orders?orderId=${orderId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("更新訂單狀態失敗");
+      }
+
+      // 更新本地狀態
+      setOrders((prev) =>
+        prev.map((order) =>
+          order.id === orderId ? { ...order, status: newStatus } : order
+        )
+      );
+
+      alert("訂單狀態更新成功");
+    } catch (err) {
+      console.error("Update order status error:", err);
+      alert(err instanceof Error ? err.message : "更新訂單狀態失敗");
+    }
+  };
+
+  const getStatusColor = (status: Order["status"]) => {
+    switch (status) {
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "paid":
+        return "bg-green-100 text-green-800";
+      case "shipped":
+        return "bg-blue-100 text-blue-800";
+      case "delivered":
+        return "bg-purple-100 text-purple-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getStatusText = (status: Order["status"]) => {
+    switch (status) {
+      case "pending":
+        return "待處理";
+      case "paid":
+        return "已付款";
+      case "shipped":
+        return "運送中";
+      case "delivered":
+        return "已送達";
+      case "cancelled":
+        return "已取消";
+      default:
+        return status;
+    }
+  };
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="p-6">
+          <div className="flex justify-center items-center h-64">
+            <div className="text-lg">載入中...</div>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <AdminLayout>
+        <div className="p-6">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            錯誤：{error}
+            <button
+              onClick={loadOrders}
+              className="ml-4 bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600"
+            >
+              重新載入
+            </button>
+          </div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>

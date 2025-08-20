@@ -215,20 +215,53 @@ const OrderConfirmationPage: FC = () => {
   });
 
   useEffect(() => {
-    // 在實際應用中，這裡會從 API 獲取訂單資料
-    // 目前使用 localStorage 模擬
-    const savedOrder = localStorage.getItem(`order_${orderId}`);
-    if (savedOrder) {
-      setOrderData(JSON.parse(savedOrder));
-    } else {
-      // 如果沒有找到訂單，設置默認資料
-      setOrderData({
-        id: orderId,
-        paymentMethod: 'bank_transfer',
-        total: 1000,
-        status: 'pending'
-      });
-    }
+    const loadOrderData = async () => {
+      try {
+        // 首先嘗試從 localStorage 讀取（剛創建的訂單）
+        const savedOrder = localStorage.getItem(`order_${orderId}`);
+        if (savedOrder) {
+          const order = JSON.parse(savedOrder);
+          setOrderData(order);
+          
+          // 檢查是否已經提交過轉帳回報
+          if (order.paymentInfo?.transferDetails?.isReported) {
+            setIsTransferReported(true);
+          }
+          return;
+        }
+
+        // 如果 localStorage 沒有，則從 API 讀取
+        const response = await fetch(`/api/orders?orderId=${orderId}`);
+        if (response.ok) {
+          const order = await response.json();
+          setOrderData(order);
+          
+          // 檢查是否已經提交過轉帳回報
+          if (order.paymentInfo?.transferDetails?.isReported) {
+            setIsTransferReported(true);
+          }
+        } else {
+          // 如果 API 也沒有找到，設置默認資料
+          setOrderData({
+            id: orderId,
+            paymentInfo: { method: 'bank_transfer' },
+            total: 1000,
+            status: 'pending'
+          });
+        }
+      } catch (error) {
+        console.error('Load order error:', error);
+        // 發生錯誤時設置默認資料
+        setOrderData({
+          id: orderId,
+          paymentInfo: { method: 'bank_transfer' },
+          total: 1000,
+          status: 'pending'
+        });
+      }
+    };
+
+    loadOrderData();
   }, [orderId]);
 
   const bankInfo = {
@@ -259,7 +292,7 @@ const OrderConfirmationPage: FC = () => {
     }
   };
 
-  const handleTransferReportSubmit = (e: React.FormEvent) => {
+  const handleTransferReportSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // 驗證必填欄位
@@ -271,15 +304,45 @@ const OrderConfirmationPage: FC = () => {
       return;
     }
 
-    // 在實際應用中，這裡會發送資料到後端
-    console.log('Transfer report submitted:', transferReportData);
-    
-    // 儲存到 localStorage 作為模擬
-    localStorage.setItem(`transfer_report_${orderId}`, JSON.stringify(transferReportData));
-    
-    // 模擬提交成功
-    setIsTransferReported(true);
-    alert('匯款資訊已成功回報！我們將在收到款項後盡快處理您的訂單。');
+    try {
+      // 準備提交資料
+      const reportData = {
+        orderId,
+        transferDate: transferReportData.transferDate,
+        transferTime: transferReportData.transferTime,
+        transferAmount: transferReportData.transferAmount,
+        transferAccount: transferReportData.transferAccount,
+        // 如果有檔案，這裡需要處理檔案上傳
+        // receiptFile: transferReportData.receiptFile ? await uploadFile(transferReportData.receiptFile) : undefined,
+      };
+
+      // 提交到後端
+      const response = await fetch("/api/orders/transfer-report", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reportData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "提交失敗");
+      }
+
+      // 模擬提交成功
+      setIsTransferReported(true);
+      
+      // 清除 localStorage 中的臨時資料
+      localStorage.removeItem(`transfer_report_${orderId}`);
+      
+      alert('匯款資訊已成功回報！我們將在收到款項後盡快處理您的訂單。');
+      
+    } catch (error) {
+      console.error('Transfer report submission error:', error);
+      alert(error instanceof Error ? error.message : '提交轉帳資訊時發生錯誤，請稍後再試。');
+    }
   };
 
   if (!orderData) {

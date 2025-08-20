@@ -232,32 +232,49 @@ const CheckoutPage: FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!validateForm()) {
       return;
     }
 
-    // 生成訂單ID
-    const orderId = Math.random().toString(36).substr(2, 9);
+    try {
+      // 準備訂單資料
+      const orderData = {
+        items: items,
+        shippingInfo,
+        paymentMethod,
+        total,
+      };
 
-    // 創建訂單物件
-    const order = {
-      id: orderId,
-      items: items,
-      shippingInfo,
-      paymentMethod,
-      status: "pending",
-      total,
-      createdAt: new Date().toISOString(),
-    };
+      // 發送訂單到後端
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
 
-    // 在實際應用中，這裡會發送訂單到後端
-    console.log("Order created:", order);
+      const result = await response.json();
 
-    // 導向到訂單確認頁面
-    router.push(`/checkout/confirmation/${orderId}`);
+      if (!response.ok) {
+        throw new Error(result.error || "創建訂單失敗");
+      }
+
+      // 儲存訂單資料到 localStorage（用於確認頁面顯示）
+      localStorage.setItem(`order_${result.order.id}`, JSON.stringify(result.order));
+
+      // 清空購物車
+      // clearCart(); // 如果購物車 store 有此方法的話
+
+      // 導向到訂單確認頁面
+      router.push(`/checkout/confirmation/${result.order.id}`);
+    } catch (error) {
+      console.error("Order creation error:", error);
+      alert(error instanceof Error ? error.message : "創建訂單時發生錯誤，請稍後再試。");
+    }
   };
 
   return (

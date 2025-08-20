@@ -165,4 +165,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For any questions or suggestions, please reach out：
 
 - GitHub: [@yuchen-land](https://github.com/yuchen-land)
-- Email: [your.email@example.com]
+- Email: [yuchen880401@gmail.com]

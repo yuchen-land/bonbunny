@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
+import { db } from "@/app/lib/db";
 
 // Schema for validating request data
 const loginSchema = z.object({
@@ -16,8 +17,8 @@ export async function POST(request: Request) {
     // Validate request data
     const validatedData = loginSchema.parse(body);
 
-    // Find user in "database"
-    const user = (global as any).users?.get(validatedData.email);
+    // Find user by email in database
+    const user = await db.getUserByEmail(validatedData.email);
 
     if (!user) {
       return NextResponse.json({ error: "用戶不存在" }, { status: 401 });
@@ -26,7 +27,7 @@ export async function POST(request: Request) {
     // Verify password
     const isValidPassword = await bcrypt.compare(
       validatedData.password,
-      user.password
+      user.password || ""
     );
 
     if (!isValidPassword) {

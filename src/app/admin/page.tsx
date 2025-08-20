@@ -1,13 +1,26 @@
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "../store/auth";
 import AdminLayout from "./components/AdminLayout";
 
-export default async function AdminPage() {
-  const session = await getServerSession(authOptions);
+export default function AdminPage() {
+  const router = useRouter();
+  const { user, isAuthenticated } = useAuthStore();
 
-  if (!session?.user?.isAdmin) {
-    redirect("/auth/login");
+  useEffect(() => {
+    if (!isAuthenticated || user?.role !== "admin") {
+      router.push("/auth/login");
+    }
+  }, [isAuthenticated, user, router]);
+
+  if (!isAuthenticated || user?.role !== "admin") {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">載入中...</div>
+      </div>
+    );
   }
 
   return (

@@ -78,6 +78,19 @@ class Database {
     products.forEach((product) => {
       this.products.set(product.id, product);
     });
+
+    // Initialize default admin user
+    const adminUser: User = {
+      id: "admin-001",
+      email: "admin@bonbunny.com",
+      name: "管理員",
+      password: "$2a$10$vx65933cN9jIoS1JL4ian.6XdaRp0.9kokzjdQZWp/.Ir4gk49JUW", // hashed "admin123"
+      role: "admin",
+      createdAt: new Date().toISOString(),
+      isAdmin: true, // For backward compatibility
+    };
+
+    this.users.set(adminUser.id, adminUser);
   }
 
   // User operations

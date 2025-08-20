@@ -47,7 +47,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="glass card h-full transition-all duration-300 hover:scale-[1.02]">
-        {/* 商品圖片 */}
+        {/* Product Image */}
         <div className="relative aspect-square overflow-hidden rounded-t-lg bg-background-secondary">
           {product.images?.[0] && (
             <Image
@@ -68,7 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               <FaRegHeart className="w-5 h-5 text-muted hover:text-primary transition-colors" />
             )}
           </button>
-          {/* 商品狀態標籤 */}
+          {/* Product Status Label */}
           {product.status !== ProductStatus.ACTIVE && (
             <div className="absolute bottom-3 right-3 px-2 py-1 text-xs rounded bg-black/50 backdrop-blur-sm text-white">
               {product.status === ProductStatus.SOLDOUT ? "已售完" : "暫停販售"}
@@ -76,7 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           )}
         </div>
 
-        {/* 商品資訊 */}
+        {/* Product Information */}
         <div className="p-4">
           <div className="flex justify-between mb-2">
             <h3 className="text-lg font-medium line-clamp-1 group-hover:text-primary transition-colors">
@@ -89,7 +89,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <p className="text-sm text-muted line-clamp-2 mb-4 min-h-[2.5rem]">
             {product.description}
           </p>
-          {/* 加入購物車按鈕 */}
+          {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
             disabled={product.status !== ProductStatus.ACTIVE}

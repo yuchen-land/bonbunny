@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // 禁用開發環境中的 HTTPS
+  // Disable HTTPS in development environment
   server: {
     https: false,
   },

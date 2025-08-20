@@ -1,7 +1,7 @@
 import { User, Order, Product, ProductCategory, ProductStatus } from "../types";
 import { Coupon } from "../types/coupon";
 
-// 模擬資料庫
+// Mock database
 class Database {
   private static instance: Database;
   private users: Map<string, User>;
@@ -27,7 +27,7 @@ class Database {
   }
 
   private initializeData() {
-    // 初始化一些測試數據
+    // Initialize some test data
     const products: Product[] = [
       {
         id: "1",
@@ -80,7 +80,7 @@ class Database {
     });
   }
 
-  // User 操作
+  // User operations
   public async getUsers(): Promise<User[]> {
     return Array.from(this.users.values());
   }
@@ -117,7 +117,7 @@ class Database {
     return this.users.delete(id);
   }
 
-  // Order 操作
+  // Order operations
   public async getOrders(): Promise<Order[]> {
     return Array.from(this.orders.values());
   }
@@ -149,7 +149,7 @@ class Database {
     return updatedOrder;
   }
 
-  // Product 操作
+  // Product operations
   public async getProducts(
     options: {
       category?: ProductCategory;
@@ -164,7 +164,7 @@ class Database {
   ): Promise<{ products: Product[]; total: number }> {
     let filteredProducts = Array.from(this.products.values());
 
-    // 根據條件篩選
+    // Filter by conditions
     if (options.category) {
       filteredProducts = filteredProducts.filter(
         (p) => p.category === options.category
@@ -192,7 +192,7 @@ class Database {
       );
     }
 
-    // 排序
+    // Sort
     if (options.sort) {
       filteredProducts.sort((a, b) => {
         const aValue = a[options.sort!] as number | string;
@@ -202,7 +202,7 @@ class Database {
       });
     }
 
-    // 分頁
+    // Pagination
     const total = filteredProducts.length;
     if (options.limit) {
       const start = options.offset || 0;
@@ -246,13 +246,13 @@ class Database {
     const product = await this.getProductById(id);
     if (!product) return false;
 
-    // 軟刪除：將狀態改為已刪除
+    // Soft delete: set status to deleted
     product.status = ProductStatus.DELETED;
     product.updatedAt = new Date().toISOString();
     return true;
   }
 
-  // 庫存相關操作
+  // Stock related operations
   public async updateStock(
     productId: string,
     quantity: number
@@ -269,7 +269,7 @@ class Database {
     return true;
   }
 
-  // Coupon 操作
+  // Coupon operations
   public async getCoupons(): Promise<Coupon[]> {
     return Array.from(this.coupons.values());
   }
@@ -307,7 +307,7 @@ class Database {
     return this.coupons.delete(id);
   }
 
-  // Settings 操作
+  // Settings operations
   public async getSetting(key: string): Promise<any> {
     return this.settings.get(key);
   }

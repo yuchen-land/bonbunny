@@ -16,17 +16,17 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
   addFavorite: (product: Product) => {
     const auth = useAuthStore.getState();
     if (!auth.isAuthenticated) {
-      // 如果未登入，可以提示用戶
-      console.log("請先登入以收藏商品");
+      // If not logged in, prompt user
+      console.log("Please log in to add favorites");
       return;
     }
 
     set((state) => {
       if (!state.favorites.some((item) => item.id === product.id)) {
-        // 更新本地狀態
+        // Update local state
         const newFavorites = [...state.favorites, product];
 
-        // 在實際應用中，這裡會調用 API 更新後端數據
+        // In a real application, this would call API to update backend data
         const user = auth.user;
         if (user) {
           useAuthStore.setState({
@@ -76,8 +76,8 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
       return;
     }
 
-    // 在實際應用中，這裡會從 API 獲取完整的收藏商品數據
-    // 目前使用模擬數據
+    // In a real application, this would fetch complete favorite product data from API
+    // Currently using mock data
     const mockProducts: Product[] = [
       {
         id: "1",
@@ -105,7 +105,7 @@ export const useFavoritesStore = create<FavoritesState>((set, get) => ({
       },
     ];
 
-    // 只載入用戶已收藏的商品
+    // Only load products that user has favorited
     const favorites = mockProducts.filter((p) =>
       auth.user?.favorites?.includes(p.id)
     );

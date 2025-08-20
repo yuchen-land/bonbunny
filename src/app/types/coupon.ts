@@ -3,14 +3,14 @@ export interface Coupon {
   code: string;
   name: string;
   description: string;
-  type: "fixed" | "percentage"; // 固定金額或百分比折扣
-  value: number; // 折扣金額或百分比
-  minPurchase: number; // 最低消費金額
-  maxDiscount?: number; // 最高折扣金額（針對百分比折扣）
+  type: "fixed" | "percentage"; // Fixed amount or percentage discount
+  value: number; // Discount amount or percentage
+  minPurchase: number; // Minimum purchase amount
+  maxDiscount?: number; // Maximum discount amount (for percentage discounts)
   startDate: string;
   endDate: string;
-  usageLimit: number; // 使用次數限制
-  usageCount: number; // 已使用次數
+  usageLimit: number; // Usage limit
+  usageCount: number; // Usage count
   isActive: boolean;
   createdAt: string;
 }

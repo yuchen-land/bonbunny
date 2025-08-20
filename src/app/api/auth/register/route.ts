@@ -3,11 +3,11 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 
-// 在實際應用中，這會是一個真實的資料庫
-// 目前使用內存存儲作為示例
+// In a real application, this would be a real database
+// Currently using in-memory storage as an example
 const users = new Map();
 
-// 驗證請求數據的 schema
+// Schema for validating request data
 const registerSchema = z
   .object({
     email: z.string().email({ message: "請輸入有效的電子郵件地址" }),
@@ -24,10 +24,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // 驗證請求數據
+    // Validate request data
     const validatedData = registerSchema.parse(body);
 
-    // 檢查用戶是否已存在
+    // Check if user already exists
     if (users.has(validatedData.email)) {
       return NextResponse.json(
         { error: "此電子郵件已被註冊" },
@@ -35,11 +35,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // 加密密碼
+    // Encrypt password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(validatedData.password, salt);
 
-    // 創建新用戶
+    // Create new user
     const newUser = {
       id: crypto.randomUUID(),
       email: validatedData.email,
@@ -50,17 +50,17 @@ export async function POST(request: Request) {
       orders: [],
     };
 
-    // 儲存用戶
+    // Store user
     users.set(validatedData.email, newUser);
 
-    // 生成 JWT token
+    // Generate JWT token
     const token = jwt.sign(
       { userId: newUser.id, email: newUser.email },
       process.env.JWT_SECRET || "your-secret-key",
       { expiresIn: "7d" }
     );
 
-    // 返回用戶資料（不包含密碼）
+    // Return user data (excluding password)
     const { password: _, ...userWithoutPassword } = newUser;
 
     return NextResponse.json({

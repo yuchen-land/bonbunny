@@ -3,17 +3,17 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  images: string[]; // 支援多張圖片
+  images: string[]; // Support multiple images
   category: ProductCategory;
-  subCategory?: string; // 子分類
-  stock: number; // 庫存數量
-  status: ProductStatus; // 商品狀態
-  specifications?: Record<string, string>; // 商品規格，如尺寸、重量等
-  ingredients?: string[]; // 食材列表
-  allergens?: string[]; // 過敏原資訊
-  nutritionalInfo?: Record<string, number>; // 營養成分
-  isRecommended?: boolean; // 是否為推薦商品
-  displayOrder?: number; // 顯示順序
+  subCategory?: string; // Sub-category
+  stock: number; // Stock quantity
+  status: ProductStatus; // Product status
+  specifications?: Record<string, string>; // Product specifications like size, weight etc.
+  ingredients?: string[]; // Ingredients list
+  allergens?: string[]; // Allergen information
+  nutritionalInfo?: Record<string, number>; // Nutritional information
+  isRecommended?: boolean; // Whether it's a recommended product
+  displayOrder?: number; // Display order
   createdAt: string;
   updatedAt: string;
 }
@@ -29,11 +29,11 @@ export enum ProductCategory {
 }
 
 export enum ProductStatus {
-  DRAFT = "draft", // 草稿
-  ACTIVE = "active", // 上架中
-  INACTIVE = "inactive", // 下架
-  SOLDOUT = "soldout", // 售罄
-  DELETED = "deleted", // 已刪除
+  DRAFT = "draft", // Draft
+  ACTIVE = "active", // Listed
+  INACTIVE = "inactive", // Unlisted
+  SOLDOUT = "soldout", // Sold out
+  DELETED = "deleted", // Deleted
 }
 
 export interface CartItem extends Product {
@@ -41,7 +41,7 @@ export interface CartItem extends Product {
 }
 
 export interface ShippingInfo {
-  userId?: string; // 用戶ID，未登入用戶為空
+  userId?: string; // User ID, empty for non-logged-in users
   fullName: string;
   email: string;
   phone: string;
@@ -76,8 +76,8 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  password?: string; // 密碼欄位（僅在後端使用）
-  isAdmin?: boolean; // 管理員權限
+  password?: string; // Password field (only used in backend)
+  isAdmin?: boolean; // Admin privileges
   phone?: string;
   address?: {
     street: string;
@@ -87,10 +87,10 @@ export interface User {
   };
   createdAt: string;
   orders?: Order[];
-  favorites?: string[]; // 收藏商品的ID列表
-  isBlocked?: boolean; // 帳號是否被封鎖
-  lastLogin?: string; // 最後登入時間
-  role: "admin" | "user"; // 新增 role 屬性
+  favorites?: string[]; // List of favorite product IDs
+  isBlocked?: boolean; // Whether account is blocked
+  lastLogin?: string; // Last login time
+  role: "admin" | "user"; // Added role property
 }
 
 export interface AuthState {

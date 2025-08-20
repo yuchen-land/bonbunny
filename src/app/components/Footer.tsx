@@ -12,7 +12,7 @@ export default function Footer() {
     <footer className="bg-background-secondary mt-auto">
       <div className="container mx-auto py-12 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* 品牌資訊 */}
+          {/* Brand Information */}
           <div className="space-y-4">
             <Link href="/" className="inline-block">
               <span className="text-2xl font-bold text-primary">BonBunny</span>
@@ -51,7 +51,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* 快速連結 */}
+          {/* Quick Links */}
           <div>
             <h3 className="font-bold text-lg mb-4">網站導覽</h3>
             <ul className="space-y-2">
@@ -90,7 +90,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 顧客服務 */}
+          {/* Customer Service */}
           <div>
             <h3 className="font-bold text-lg mb-4">顧客服務</h3>
             <ul className="space-y-2">
@@ -137,7 +137,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 聯絡資訊 */}
+          {/* Contact Information */}
           <div>
             <h3 className="font-bold text-lg mb-4">聯絡我們</h3>
             <ul className="space-y-4">
@@ -162,7 +162,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 底部資訊 */}
+        {/* Bottom Information */}
         <div className="mt-12 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-muted text-sm">

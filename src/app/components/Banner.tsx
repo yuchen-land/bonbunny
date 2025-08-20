@@ -85,7 +85,7 @@ export default function Banner() {
           }}
           className="absolute inset-0"
         >
-          {/* 背景圖片 */}
+          {/* Background Image */}
           <div className="relative w-full h-full">
             <Image
               src={banners[currentSlide].image}
@@ -95,11 +95,11 @@ export default function Banner() {
               sizes="100vw"
               className="object-cover"
             />
-            {/* 漸層遮罩 */}
+            {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
           </div>
 
-          {/* 文字內容 */}
+          {/* Text Content */}
           <div className="container absolute inset-0 flex items-center">
             <div className="max-w-xl">
               <motion.h1
@@ -132,7 +132,7 @@ export default function Banner() {
         </motion.div>
       </AnimatePresence>
 
-      {/* 導航按鈕 */}
+      {/* Navigation Buttons */}
       <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2 z-10">
         {banners.map((_, index) => (
           <button
@@ -150,7 +150,7 @@ export default function Banner() {
         ))}
       </div>
 
-      {/* 左右箭頭 */}
+      {/* Left Right Arrows */}
       <button
         onClick={() => navigate(-1)}
         className="glass absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full text-white/70 hover:text-white transition-colors z-10"

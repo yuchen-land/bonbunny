@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
 
-// 驗證請求數據的 schema
+// Schema for validating request data
 const loginSchema = z.object({
   email: z.string().email({ message: "請輸入有效的電子郵件地址" }),
   password: z.string().min(1, { message: "請輸入密碼" }),
@@ -13,17 +13,17 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    // 驗證請求數據
+    // Validate request data
     const validatedData = loginSchema.parse(body);
 
-    // 從"資料庫"中查找用戶
+    // Find user in "database"
     const user = (global as any).users?.get(validatedData.email);
 
     if (!user) {
       return NextResponse.json({ error: "用戶不存在" }, { status: 401 });
     }
 
-    // 驗證密碼
+    // Verify password
     const isValidPassword = await bcrypt.compare(
       validatedData.password,
       user.password
@@ -33,14 +33,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "密碼錯誤" }, { status: 401 });
     }
 
-    // 生成 JWT token
+    // Generate JWT token
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       process.env.JWT_SECRET || "your-secret-key",
       { expiresIn: "7d" }
     );
 
-    // 返回用戶資料（不包含密碼）
+    // Return user data (excluding password)
     const { password: _, ...userWithoutPassword } = user;
 
     return NextResponse.json({

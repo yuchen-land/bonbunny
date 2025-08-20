@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 :root {
-  /* 現代化的配色方案 - 使用 RGB 格式 */
+  /* Modern color scheme - using RGB format */
   --background: 255 255 255;
   --background-secondary: 248 250 252;
   --foreground: 15 23 42;
   --muted: 100 116 139;
 
-  /* 主色調：柔和的玫瑰金 */
+  /* Primary color: Soft rose gold */
   --primary: 249 127 127;
   --primary-hover: 249 92 92;
   --primary-light: 254 242 242;
 
-  /* 輔助色：柔和的奶油色 */
+  /* Secondary color: Soft cream */
   --secondary: 255 236 209;
   --secondary-hover: 255 228 188;
 
-  /* 狀態顏色 */
+  /* Status colors */
   --success: 34 197 94;
   --success-hover: 22 163 74;
   --success-light: 240 253 244;
@@ -31,11 +31,11 @@
   --warning-hover: 217 119 6;
   --warning-light: 255 251 235;
 
-  /* 邊框和陰影 */
+  /* Borders and shadows */
   --border: 226 232 240;
   --ring: 249 127 127 0.25;
 
-  /* 陰影效果 */
+  /* Shadow effects */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -43,13 +43,13 @@
     0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 
-  /* 圓角 */
+  /* Border radius */
   --radius: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-sm: 0.25rem;
 }
 
-/* 暗色主題 */
+/* Dark theme */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: 15 23 42;
@@ -87,7 +87,7 @@
     background-position: center center;
   }
 
-  /* 滾動條美化 */
+  /* Scrollbar styling */
   ::-webkit-scrollbar {
     @apply w-2;
   }

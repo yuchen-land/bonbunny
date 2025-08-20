@@ -17,7 +17,7 @@ import Banner from "./components/Banner";
 import ProductCard from "./components/ProductCard";
 import { Product, ProductCategory, ProductStatus } from "./types";
 
-// 示例商品數據
+// Sample product data
 const featuredProducts: Product[] = [
   {
     id: "1",

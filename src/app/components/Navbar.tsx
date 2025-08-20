@@ -3,11 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   FaUser,
   FaHeart,
   FaShoppingCart,
   FaQuestionCircle,
+  FaSearch,
 } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { MdInfo, MdPhone } from "react-icons/md";
@@ -27,9 +29,11 @@ const categoryLabels: Record<ProductCategory, string> = {
 };
 
 const Navbar = () => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const categoryRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const { user, isAuthenticated, logout } = useAuthStore();
@@ -39,6 +43,14 @@ const Navbar = () => {
   const closeMenu = () => setIsMenuOpen(false);
   const toggleCategory = () => setIsCategoryOpen(!isCategoryOpen);
   const toggleInfo = () => setIsInfoOpen(!isInfoOpen);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery("");
+    }
+  };
 
   // 處理點擊外部關閉下拉選單
   useEffect(() => {
@@ -204,6 +216,27 @@ const Navbar = () => {
               </Link>
             )}
           </div>
+
+          {/* Search Bar */}
+          <div className="hidden md:flex items-center mx-6">
+            <form onSubmit={handleSearch} className="relative">
+              <input
+                type="text"
+                placeholder="搜尋商品..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-64 px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+              />
+              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 px-2 py-1 text-primary hover:text-primary-hover"
+              >
+                搜尋
+              </button>
+            </form>
+          </div>
+
           {/* Desktop User Actions */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Favorites */}
@@ -284,6 +317,26 @@ const Navbar = () => {
         {isMenuOpen && (
           <div className="md:hidden animate-in border-t border-border">
             <div className="flex flex-col py-4 space-y-4">
+              {/* Mobile Search */}
+              <div className="px-2">
+                <form onSubmit={handleSearch} className="relative">
+                  <input
+                    type="text"
+                    placeholder="搜尋商品..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                  />
+                  <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <button
+                    type="submit"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 px-2 py-1 text-primary hover:text-primary-hover text-sm"
+                  >
+                    搜尋
+                  </button>
+                </form>
+              </div>
+
               {/* 主要導航項目 */}
               {/* 關於我們 */}
               <div className="relative">

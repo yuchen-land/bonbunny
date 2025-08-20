@@ -9,6 +9,11 @@ import {
   FiShoppingBag,
   FiUsers,
   FiSettings,
+  FiMail,
+  FiPercent,
+  FiBarChart,
+  FiPieChart,
+  FiTrendingUp,
 } from "react-icons/fi";
 
 interface AdminLayoutProps {
@@ -23,6 +28,11 @@ const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
     { icon: FiBox, label: "商品管理", href: "/admin/products" },
     { icon: FiShoppingBag, label: "訂單管理", href: "/admin/orders" },
     { icon: FiUsers, label: "會員管理", href: "/admin/users" },
+    { icon: FiPercent, label: "優惠券管理", href: "/admin/coupons" },
+    { icon: FiBarChart, label: "銷售報表", href: "/admin/reports" },
+    { icon: FiPieChart, label: "用戶分析", href: "/admin/analytics" },
+    { icon: FiTrendingUp, label: "GA整合", href: "/admin/ga" },
+    { icon: FiMail, label: "郵件測試", href: "/admin/email-test" },
     { icon: FiSettings, label: "設定", href: "/admin/settings" },
   ];
 

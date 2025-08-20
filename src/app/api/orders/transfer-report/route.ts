@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/app/lib/db";
 import { z } from "zod";
+import { sendTransferNotificationEmail, sendAdminNotificationEmail } from "@/app/lib/email";
 
 // Schema for validating transfer report data
 const transferReportSchema = z.object({
@@ -55,6 +56,24 @@ export async function POST(request: Request) {
         },
         { status: 500 }
       );
+    }
+
+    // Send transfer notification email to customer
+    try {
+      await sendTransferNotificationEmail(updatedOrder);
+      console.log(`Transfer notification email sent for order: ${updatedOrder.id}`);
+    } catch (emailError) {
+      console.error(`Failed to send transfer notification email for order: ${updatedOrder.id}`, emailError);
+      // Don't fail the transfer report if email fails
+    }
+
+    // Send admin notification about transfer report
+    try {
+      await sendAdminNotificationEmail(updatedOrder, "transfer_reported");
+      console.log(`Admin transfer notification email sent for order: ${updatedOrder.id}`);
+    } catch (emailError) {
+      console.error(`Failed to send admin transfer notification email for order: ${updatedOrder.id}`, emailError);
+      // Don't fail the transfer report if email fails
     }
 
     return NextResponse.json({

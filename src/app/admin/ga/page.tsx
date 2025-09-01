@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react";
 import { useAuthStore } from "@/app/store/auth";
 import AdminLayout from "../components/AdminLayout";
-import { FiSettings, FiCode, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
+import {
+  FiSettings,
+  FiCode,
+  FiCheckCircle,
+  FiAlertCircle,
+} from "react-icons/fi";
 
 interface GAConfig {
   measurementId: string;
@@ -48,7 +53,7 @@ const GAIntegrationPage = () => {
     try {
       const response = await fetch("/api/admin/settings/ga", {
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -70,7 +75,7 @@ const GAIntegrationPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({
           measurementId,
@@ -95,7 +100,7 @@ const GAIntegrationPage = () => {
       const response = await fetch("/api/admin/settings/ga/test", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -114,7 +119,7 @@ const GAIntegrationPage = () => {
       const response = await fetch("/api/admin/reports/analytics/sync", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
@@ -146,7 +151,9 @@ const GAIntegrationPage = () => {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Google Analytics 整合</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Google Analytics 整合
+            </h1>
             <p className="mt-1 text-sm text-gray-600">
               設定和管理 Google Analytics 數據追蹤
             </p>
@@ -233,13 +240,17 @@ const GAIntegrationPage = () => {
               };
 
               return (
-                <div key={eventKey} className="flex items-center justify-between">
+                <div
+                  key={eventKey}
+                  className="flex items-center justify-between"
+                >
                   <div>
                     <span className="text-sm font-medium text-gray-900">
                       {eventLabels[eventKey as keyof typeof eventLabels]}
                     </span>
                     <p className="text-xs text-gray-500">
-                      追蹤用戶 {eventLabels[eventKey as keyof typeof eventLabels]} 事件
+                      追蹤用戶{" "}
+                      {eventLabels[eventKey as keyof typeof eventLabels]} 事件
                     </p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -308,7 +319,8 @@ const GAIntegrationPage = () => {
             </ol>
             <div className="mt-4 p-4 bg-blue-50 rounded-md">
               <p className="text-blue-800">
-                <strong>注意:</strong> 設定完成後，數據可能需要 24-48 小時才會在 Google Analytics 中顯示。
+                <strong>注意:</strong> 設定完成後，數據可能需要 24-48 小時才會在
+                Google Analytics 中顯示。
               </p>
             </div>
           </div>

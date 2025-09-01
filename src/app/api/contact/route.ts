@@ -16,20 +16,20 @@ const createTransporter = () => {
   // For development, you can use services like Gmail, Outlook, or SMTP
   // For production, use services like SendGrid, AWS SES, etc.
   return nodemailer.createTransport({
-    service: 'gmail', // You can change this to your preferred email service
+    service: "gmail", // You can change this to your preferred email service
     auth: {
-      user: process.env.EMAIL_USER || 'your-email@gmail.com', // Add to .env.local
-      pass: process.env.EMAIL_PASSWORD || 'your-app-password', // Add to .env.local
+      user: process.env.EMAIL_USER || "your-email@gmail.com", // Add to .env.local
+      pass: process.env.EMAIL_PASSWORD || "your-app-password", // Add to .env.local
     },
   });
 };
 
 const sendContactEmail = async (contactData: any) => {
   const transporter = createTransporter();
-  
+
   const mailOptions = {
-    from: process.env.EMAIL_USER || 'noreply@bonbunny.com',
-    to: 'yuchen880401@gmail.com',
+    from: process.env.EMAIL_USER || "noreply@bonbunny.com",
+    to: "yuchen880401@gmail.com",
     subject: `【BonBunny 聯絡表單】${contactData.subject}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -38,18 +38,18 @@ const sendContactEmail = async (contactData: any) => {
           <h3>聯絡人資訊</h3>
           <p><strong>姓名：</strong> ${contactData.name}</p>
           <p><strong>電子郵件：</strong> ${contactData.email}</p>
-          <p><strong>電話：</strong> ${contactData.phone || '未提供'}</p>
+          <p><strong>電話：</strong> ${contactData.phone || "未提供"}</p>
           <p><strong>主旨：</strong> ${contactData.subject}</p>
         </div>
         <div style="margin-top: 20px;">
           <h3>訊息內容</h3>
           <div style="background-color: #ffffff; padding: 15px; border-left: 4px solid #ff6b6b; margin: 10px 0;">
-            ${contactData.message.replace(/\n/g, '<br>')}
+            ${contactData.message.replace(/\n/g, "<br>")}
           </div>
         </div>
         <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #dee2e6; color: #6c757d; font-size: 12px;">
           <p>此郵件由 BonBunny 聯絡表單自動發送</p>
-          <p>發送時間：${new Date().toLocaleString('zh-TW')}</p>
+          <p>發送時間：${new Date().toLocaleString("zh-TW")}</p>
         </div>
       </div>
     `,

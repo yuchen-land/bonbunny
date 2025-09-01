@@ -238,9 +238,7 @@ const CartPage: FC = () => {
       setCouponError("");
     } catch (error) {
       console.error("Apply coupon error:", error);
-      setCouponError(
-        error instanceof Error ? error.message : "套用優惠券失敗"
-      );
+      setCouponError(error instanceof Error ? error.message : "套用優惠券失敗");
     } finally {
       setCouponLoading(false);
     }
@@ -312,16 +310,38 @@ const CartPage: FC = () => {
           <SummaryLabel>運費</SummaryLabel>
           <SummaryValue>NT$ 0</SummaryValue>
         </SummaryRow>
-        
+
         {/* 優惠券區域 */}
-        <div style={{ margin: "1rem 0", padding: "1rem", backgroundColor: "#f8f9fa", borderRadius: "8px" }}>
+        <div
+          style={{
+            margin: "1rem 0",
+            padding: "1rem",
+            backgroundColor: "#f8f9fa",
+            borderRadius: "8px",
+          }}
+        >
           {!appliedCoupon ? (
             <>
-              <div style={{ marginBottom: "0.5rem", fontWeight: "bold", color: "#333", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <div
+                style={{
+                  marginBottom: "0.5rem",
+                  fontWeight: "bold",
+                  color: "#333",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
                 <FaTag />
                 輸入優惠券代碼
               </div>
-              <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.5rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "0.5rem",
+                  marginBottom: "0.5rem",
+                }}
+              >
                 <input
                   type="text"
                   value={couponCode}
@@ -359,11 +379,26 @@ const CartPage: FC = () => {
             </>
           ) : (
             <div>
-              <div style={{ marginBottom: "0.5rem", fontWeight: "bold", color: "#28a745", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <div
+                style={{
+                  marginBottom: "0.5rem",
+                  fontWeight: "bold",
+                  color: "#28a745",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
                 <FaTag />
                 已套用優惠券：{appliedCoupon.code}
               </div>
-              <div style={{ fontSize: "0.875rem", color: "#6c757d", marginBottom: "0.5rem" }}>
+              <div
+                style={{
+                  fontSize: "0.875rem",
+                  color: "#6c757d",
+                  marginBottom: "0.5rem",
+                }}
+              >
                 {appliedCoupon.name}
               </div>
               <button
@@ -387,10 +422,12 @@ const CartPage: FC = () => {
         {appliedCoupon && (
           <SummaryRow>
             <SummaryLabel>優惠折扣</SummaryLabel>
-            <SummaryValue style={{ color: "#28a745" }}>-NT$ {discountAmount}</SummaryValue>
+            <SummaryValue style={{ color: "#28a745" }}>
+              -NT$ {discountAmount}
+            </SummaryValue>
           </SummaryRow>
         )}
-        
+
         <SummaryRow>
           <SummaryLabel>總計</SummaryLabel>
           <SummaryValue className="total">NT$ {finalTotal}</SummaryValue>

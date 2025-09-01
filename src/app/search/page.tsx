@@ -39,14 +39,21 @@ const SearchPage: FC = () => {
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  
+
   const [filters, setFilters] = useState<SearchFilters>({
     q: searchParams.get("q") || "",
     category: (searchParams.get("category") as ProductCategory) || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    inStock: searchParams.get("inStock") ? searchParams.get("inStock") === "true" : null,
-    sortBy: (searchParams.get("sortBy") as "name" | "price" | "createdAt" | "popularity") || "createdAt",
+    inStock: searchParams.get("inStock")
+      ? searchParams.get("inStock") === "true"
+      : null,
+    sortBy:
+      (searchParams.get("sortBy") as
+        | "name"
+        | "price"
+        | "createdAt"
+        | "popularity") || "createdAt",
     sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
   });
 
@@ -63,17 +70,19 @@ const SearchPage: FC = () => {
     setLoading(true);
     try {
       const queryParams = new URLSearchParams();
-      
+
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== "" && value !== null && value !== undefined) {
           queryParams.append(key, value.toString());
         }
       });
-      
+
       queryParams.append("page", currentPage.toString());
       queryParams.append("limit", "12");
 
-      const response = await fetch(`/api/products/search?${queryParams.toString()}`);
+      const response = await fetch(
+        `/api/products/search?${queryParams.toString()}`
+      );
       const result = await response.json();
 
       if (response.ok) {
@@ -92,7 +101,7 @@ const SearchPage: FC = () => {
     const updatedFilters = { ...filters, ...newFilters };
     setFilters(updatedFilters);
     setCurrentPage(1);
-    
+
     // Update URL
     const queryParams = new URLSearchParams();
     Object.entries(updatedFilters).forEach(([key, value]) => {
@@ -100,7 +109,7 @@ const SearchPage: FC = () => {
         queryParams.append(key, value.toString());
       }
     });
-    
+
     router.push(`/search?${queryParams.toString()}`);
   };
 
@@ -145,7 +154,7 @@ const SearchPage: FC = () => {
         {/* Search Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">產品搜尋</h1>
-          
+
           {/* Search Input */}
           <div className="flex gap-4 mb-4">
             <div className="flex-1 relative">
@@ -178,15 +187,21 @@ const SearchPage: FC = () => {
                   </label>
                   <select
                     value={filters.category}
-                    onChange={(e) => updateFilters({ category: e.target.value as ProductCategory | "" })}
+                    onChange={(e) =>
+                      updateFilters({
+                        category: e.target.value as ProductCategory | "",
+                      })
+                    }
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30"
                   >
                     <option value="">所有類別</option>
-                    {searchResult?.filters.availableCategories.map((category) => (
-                      <option key={category} value={category}>
-                        {getCategoryDisplayName(category)}
-                      </option>
-                    ))}
+                    {searchResult?.filters.availableCategories.map(
+                      (category) => (
+                        <option key={category} value={category}>
+                          {getCategoryDisplayName(category)}
+                        </option>
+                      )
+                    )}
                   </select>
                 </div>
 
@@ -200,14 +215,18 @@ const SearchPage: FC = () => {
                       type="number"
                       placeholder="最低價"
                       value={filters.minPrice}
-                      onChange={(e) => updateFilters({ minPrice: e.target.value })}
+                      onChange={(e) =>
+                        updateFilters({ minPrice: e.target.value })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30"
                     />
                     <input
                       type="number"
                       placeholder="最高價"
                       value={filters.maxPrice}
-                      onChange={(e) => updateFilters({ maxPrice: e.target.value })}
+                      onChange={(e) =>
+                        updateFilters({ maxPrice: e.target.value })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30"
                     />
                   </div>
@@ -219,10 +238,15 @@ const SearchPage: FC = () => {
                     庫存狀態
                   </label>
                   <select
-                    value={filters.inStock === null ? "" : filters.inStock.toString()}
-                    onChange={(e) => 
-                      updateFilters({ 
-                        inStock: e.target.value === "" ? null : e.target.value === "true" 
+                    value={
+                      filters.inStock === null ? "" : filters.inStock.toString()
+                    }
+                    onChange={(e) =>
+                      updateFilters({
+                        inStock:
+                          e.target.value === ""
+                            ? null
+                            : e.target.value === "true",
                       })
                     }
                     className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30"
@@ -241,7 +265,15 @@ const SearchPage: FC = () => {
                   <div className="flex gap-2">
                     <select
                       value={filters.sortBy}
-                      onChange={(e) => updateFilters({ sortBy: e.target.value as "name" | "price" | "createdAt" | "popularity" })}
+                      onChange={(e) =>
+                        updateFilters({
+                          sortBy: e.target.value as
+                            | "name"
+                            | "price"
+                            | "createdAt"
+                            | "popularity",
+                        })
+                      }
                       className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30"
                     >
                       <option value="createdAt">新品</option>
@@ -251,7 +283,11 @@ const SearchPage: FC = () => {
                     </select>
                     <select
                       value={filters.sortOrder}
-                      onChange={(e) => updateFilters({ sortOrder: e.target.value as "asc" | "desc" })}
+                      onChange={(e) =>
+                        updateFilters({
+                          sortOrder: e.target.value as "asc" | "desc",
+                        })
+                      }
                       className="w-20 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30"
                     >
                       <option value="desc">降序</option>
@@ -313,11 +349,12 @@ const SearchPage: FC = () => {
                     >
                       上一頁
                     </button>
-                    
+
                     <span className="px-4 py-2 text-gray-600">
-                      第 {currentPage} 頁，共 {searchResult.pagination.totalPages} 頁
+                      第 {currentPage} 頁，共{" "}
+                      {searchResult.pagination.totalPages} 頁
                     </span>
-                    
+
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={!searchResult.pagination.hasNextPage}
@@ -330,7 +367,9 @@ const SearchPage: FC = () => {
               </>
             ) : (
               <div className="text-center py-16">
-                <div className="text-gray-500 text-lg mb-4">沒有找到符合條件的商品</div>
+                <div className="text-gray-500 text-lg mb-4">
+                  沒有找到符合條件的商品
+                </div>
                 <button
                   onClick={clearFilters}
                   className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-hover"

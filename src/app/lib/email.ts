@@ -36,8 +36,12 @@ export const generateOrderConfirmationEmail = (order: Order) => {
     <tr style="border-bottom: 1px solid #eee;">
       <td style="padding: 10px; text-align: left;">${item.name}</td>
       <td style="padding: 10px; text-align: center;">${item.quantity}</td>
-      <td style="padding: 10px; text-align: right;">${formatCurrency(item.price)}</td>
-      <td style="padding: 10px; text-align: right;">${formatCurrency(item.price * item.quantity)}</td>
+      <td style="padding: 10px; text-align: right;">${formatCurrency(
+        item.price
+      )}</td>
+      <td style="padding: 10px; text-align: right;">${formatCurrency(
+        item.price * item.quantity
+      )}</td>
     </tr>
   `
     )
@@ -73,7 +77,11 @@ export const generateOrderConfirmationEmail = (order: Order) => {
           <p><strong>姓名：</strong>${order.shippingInfo.fullName}</p>
           <p><strong>電話：</strong>${order.shippingInfo.phone}</p>
           <p><strong>Email：</strong>${order.shippingInfo.email}</p>
-          <p><strong>地址：</strong>${order.shippingInfo.address.postalCode} ${order.shippingInfo.address.city}${order.shippingInfo.address.district}${order.shippingInfo.address.street}</p>
+          <p><strong>地址：</strong>${order.shippingInfo.address.postalCode} ${
+      order.shippingInfo.address.city
+    }${order.shippingInfo.address.district}${
+      order.shippingInfo.address.street
+    }</p>
         </div>
 
         <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
@@ -93,7 +101,9 @@ export const generateOrderConfirmationEmail = (order: Order) => {
             <tfoot>
               <tr>
                 <td colspan="3" style="padding: 15px; text-align: right; font-weight: bold; border-top: 2px solid #ddd;">訂單總計：</td>
-                <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #667eea; border-top: 2px solid #ddd;">${formatCurrency(order.total)}</td>
+                <td style="padding: 15px; text-align: right; font-weight: bold; font-size: 18px; color: #667eea; border-top: 2px solid #ddd;">${formatCurrency(
+                  order.total
+                )}</td>
               </tr>
             </tfoot>
           </table>
@@ -106,7 +116,9 @@ export const generateOrderConfirmationEmail = (order: Order) => {
             <p style="margin: 5px 0;"><strong>銀行：</strong>台灣銀行</p>
             <p style="margin: 5px 0;"><strong>戶名：</strong>BonBunny 烘焙坊</p>
             <p style="margin: 5px 0;"><strong>帳號：</strong>123-456-789-012</p>
-            <p style="margin: 5px 0;"><strong>匯款金額：</strong>${formatCurrency(order.total)}</p>
+            <p style="margin: 5px 0;"><strong>匯款金額：</strong>${formatCurrency(
+              order.total
+            )}</p>
           </div>
           <p style="color: #856404; margin-top: 15px; font-size: 14px;">
             ⚠️ 請於收到此信後 3 天內完成匯款，並透過網站回報匯款資訊。
@@ -148,7 +160,7 @@ export const generateOrderConfirmationEmail = (order: Order) => {
 // Transfer notification email template
 export const generateTransferNotificationEmail = (order: Order) => {
   const transferDetails = order.paymentInfo.transferDetails;
-  
+
   if (!transferDetails) {
     throw new Error("Transfer details not found");
   }
@@ -182,9 +194,15 @@ export const generateTransferNotificationEmail = (order: Order) => {
           <h3 style="color: #333; margin-top: 0;">匯款資訊</h3>
           <p><strong>匯款日期：</strong>${transferDetails?.transferDate}</p>
           <p><strong>匯款時間：</strong>${transferDetails?.transferTime}</p>
-          <p><strong>匯款金額：</strong>${formatCurrency(transferDetails?.transferAmount || 0)}</p>
-          <p><strong>匯款帳號後5碼：</strong>${transferDetails?.transferAccount}</p>
-          <p><strong>通知時間：</strong>${formatDate(transferDetails?.reportedAt || new Date().toISOString())}</p>
+          <p><strong>匯款金額：</strong>${formatCurrency(
+            transferDetails?.transferAmount || 0
+          )}</p>
+          <p><strong>匯款帳號後5碼：</strong>${
+            transferDetails?.transferAccount
+          }</p>
+          <p><strong>通知時間：</strong>${formatDate(
+            transferDetails?.reportedAt || new Date().toISOString()
+          )}</p>
         </div>
 
         <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
@@ -231,7 +249,7 @@ export const sendOrderConfirmationEmail = async (order: Order) => {
   try {
     const transporter = createTransporter();
     const emailContent = generateOrderConfirmationEmail(order);
-    
+
     const mailOptions = {
       from: `"BonBunny 烘焙坊" <${process.env.EMAIL_USER}>`,
       to: order.shippingInfo.email,
@@ -253,7 +271,7 @@ export const sendTransferNotificationEmail = async (order: Order) => {
   try {
     const transporter = createTransporter();
     const emailContent = generateTransferNotificationEmail(order);
-    
+
     const mailOptions = {
       from: `"BonBunny 烘焙坊" <${process.env.EMAIL_USER}>`,
       to: order.shippingInfo.email,
@@ -271,13 +289,16 @@ export const sendTransferNotificationEmail = async (order: Order) => {
 };
 
 // Send admin notification email (for internal use)
-export const sendAdminNotificationEmail = async (order: Order, type: "new_order" | "transfer_reported") => {
+export const sendAdminNotificationEmail = async (
+  order: Order,
+  type: "new_order" | "transfer_reported"
+) => {
   try {
     const transporter = createTransporter();
-    
+
     let subject = "";
     let content = "";
-    
+
     if (type === "new_order") {
       subject = `【新訂單通知】訂單編號：${order.id}`;
       content = `
@@ -297,12 +318,14 @@ export const sendAdminNotificationEmail = async (order: Order, type: "new_order"
         <p><strong>訂單編號：</strong>${order.id}</p>
         <p><strong>客戶姓名：</strong>${order.shippingInfo.fullName}</p>
         <p><strong>匯款日期：</strong>${transferDetails?.transferDate}</p>
-        <p><strong>匯款金額：</strong>${formatCurrency(transferDetails?.transferAmount || 0)}</p>
+        <p><strong>匯款金額：</strong>${formatCurrency(
+          transferDetails?.transferAmount || 0
+        )}</p>
         <p><strong>帳號後5碼：</strong>${transferDetails?.transferAccount}</p>
         <p>請儘速確認付款狀態。</p>
       `;
     }
-    
+
     const mailOptions = {
       from: `"BonBunny 系統" <${process.env.EMAIL_USER}>`,
       to: "yuchen880401@gmail.com", // Admin email

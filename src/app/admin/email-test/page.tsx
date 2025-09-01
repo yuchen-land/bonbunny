@@ -43,7 +43,7 @@ const EmailTestPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           type: "order_confirmation",
@@ -59,7 +59,9 @@ const EmailTestPage = () => {
         setResult(`❌ 發送失敗：${data.error}`);
       }
     } catch (error) {
-      setResult(`❌ 錯誤：${error instanceof Error ? error.message : "未知錯誤"}`);
+      setResult(
+        `❌ 錯誤：${error instanceof Error ? error.message : "未知錯誤"}`
+      );
     } finally {
       setLoading(false);
     }
@@ -99,7 +101,7 @@ const EmailTestPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           type: "transfer_notification",
@@ -115,7 +117,9 @@ const EmailTestPage = () => {
         setResult(`❌ 發送失敗：${data.error}`);
       }
     } catch (error) {
-      setResult(`❌ 錯誤：${error instanceof Error ? error.message : "未知錯誤"}`);
+      setResult(
+        `❌ 錯誤：${error instanceof Error ? error.message : "未知錯誤"}`
+      );
     } finally {
       setLoading(false);
     }
@@ -134,7 +138,10 @@ const EmailTestPage = () => {
         <div className="bg-white shadow rounded-lg p-6">
           <div className="space-y-6">
             <div>
-              <label htmlFor="orderId" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="orderId"
+                className="block text-sm font-medium text-gray-700"
+              >
                 訂單編號
               </label>
               <div className="mt-1">
@@ -176,7 +183,9 @@ const EmailTestPage = () => {
         </div>
 
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-          <h3 className="text-sm font-medium text-yellow-800 mb-2">⚠️ 使用說明</h3>
+          <h3 className="text-sm font-medium text-yellow-800 mb-2">
+            ⚠️ 使用說明
+          </h3>
           <ul className="text-sm text-yellow-700 space-y-1">
             <li>• 請確保已在 .env 文件中設定 EMAIL_USER 和 EMAIL_PASSWORD</li>
             <li>• 使用 Gmail 應用程式密碼，而非一般密碼</li>

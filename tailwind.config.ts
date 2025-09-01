@@ -8,6 +8,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        "noto-tc": ["var(--font-noto-tc)", "system-ui", "sans-serif"],
+        playfair: ["var(--font-playfair)", "serif"],
+        inter: ["var(--font-inter)", "system-ui", "sans-serif"],
+        display: ["var(--font-playfair)", "serif"],
+        body: ["var(--font-noto-tc)", "system-ui", "sans-serif"],
+        ui: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
       colors: {
         border: "rgb(var(--border) / <alpha-value>)",
         ring: "rgb(var(--ring) / <alpha-value>)",

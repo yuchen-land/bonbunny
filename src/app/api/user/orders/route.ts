@@ -18,10 +18,7 @@ export async function GET(request: Request) {
     const user = await db.getUserById(decoded.userId);
 
     if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Get all orders
@@ -29,13 +26,15 @@ export async function GET(request: Request) {
 
     // Filter orders for this user
     const userOrders = allOrders.filter(
-      order => order.shippingInfo.userId === user.id || 
-               order.shippingInfo.email === user.email
+      (order) =>
+        order.shippingInfo.userId === user.id ||
+        order.shippingInfo.email === user.email
     );
 
     // Sort by creation date (newest first)
-    userOrders.sort((a, b) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    userOrders.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
 
     return NextResponse.json({

@@ -3,7 +3,10 @@ import { db } from "@/app/lib/db";
 import { z } from "zod";
 import type { Order, ShippingInfo, CartItem } from "@/app/types";
 import { ProductCategory, ProductStatus } from "@/app/types";
-import { sendOrderConfirmationEmail, sendAdminNotificationEmail } from "@/app/lib/email";
+import {
+  sendOrderConfirmationEmail,
+  sendAdminNotificationEmail,
+} from "@/app/lib/email";
 
 // Schema for validating order data
 const createOrderSchema = z.object({
@@ -77,16 +80,24 @@ export async function POST(request: Request) {
       await sendOrderConfirmationEmail(savedOrder);
       console.log(`Order confirmation email sent for order: ${savedOrder.id}`);
     } catch (emailError) {
-      console.error(`Failed to send order confirmation email for order: ${savedOrder.id}`, emailError);
+      console.error(
+        `Failed to send order confirmation email for order: ${savedOrder.id}`,
+        emailError
+      );
       // Don't fail the order creation if email fails
     }
 
     // Send new order notification to admin
     try {
       await sendAdminNotificationEmail(savedOrder, "new_order");
-      console.log(`Admin notification email sent for new order: ${savedOrder.id}`);
+      console.log(
+        `Admin notification email sent for new order: ${savedOrder.id}`
+      );
     } catch (emailError) {
-      console.error(`Failed to send admin notification email for order: ${savedOrder.id}`, emailError);
+      console.error(
+        `Failed to send admin notification email for order: ${savedOrder.id}`,
+        emailError
+      );
       // Don't fail the order creation if email fails
     }
 

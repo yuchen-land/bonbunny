@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/app/api/auth/utils";
 
 // 模擬用戶資料
-const users = [
-  { id: "1", email: "yuchen880401@gmail.com", role: "admin" },
-];
+const users = [{ id: "1", email: "yuchen880401@gmail.com", role: "admin" }];
 
 async function verifyAdmin(request: NextRequest): Promise<boolean> {
   try {
@@ -15,8 +13,8 @@ async function verifyAdmin(request: NextRequest): Promise<boolean> {
 
     const token = authHeader.substring(7);
     const payload = await verifyToken(token);
-    const user = users.find(u => u.email === payload.email);
-    
+    const user = users.find((u) => u.email === payload.email);
+
     return user?.role === "admin";
   } catch {
     return false;
@@ -58,10 +56,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("Analytics sync error:", error);
     return NextResponse.json(
-      { 
+      {
         success: false,
         error: "Failed to sync analytics data",
-        message: "Data synchronization failed. Please try again later."
+        message: "Data synchronization failed. Please try again later.",
       },
       { status: 500 }
     );

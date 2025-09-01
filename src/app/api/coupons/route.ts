@@ -143,10 +143,7 @@ export async function GET(request: Request) {
       // Admin view - verify authentication
       const authHeader = request.headers.get("Authorization");
       if (!authHeader?.startsWith("Bearer ")) {
-        return NextResponse.json(
-          { error: "未授權的請求" },
-          { status: 401 }
-        );
+        return NextResponse.json({ error: "未授權的請求" }, { status: 401 });
       }
 
       const token = authHeader.split(" ")[1];
@@ -154,10 +151,7 @@ export async function GET(request: Request) {
       const adminUser = await db.getUserById(decoded.userId);
 
       if (!adminUser?.isAdmin) {
-        return NextResponse.json(
-          { error: "無管理員權限" },
-          { status: 403 }
-        );
+        return NextResponse.json({ error: "無管理員權限" }, { status: 403 });
       }
 
       // Return all coupons for admin
@@ -166,7 +160,7 @@ export async function GET(request: Request) {
     } else {
       // Public view - only active coupons
       const allCoupons = await db.getCoupons();
-      const activeCoupons = allCoupons.filter(coupon => {
+      const activeCoupons = allCoupons.filter((coupon) => {
         const now = new Date();
         const startDate = new Date(coupon.startDate);
         const endDate = new Date(coupon.endDate);

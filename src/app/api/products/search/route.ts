@@ -20,17 +20,28 @@ const searchSchema = z.object({
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    
+
     // Parse and validate search parameters
     const params = {
       q: searchParams.get("q") || undefined,
-      category: searchParams.get("category") as ProductCategory || undefined,
-      status: searchParams.get("status") as ProductStatus || undefined,
-      minPrice: searchParams.get("minPrice") ? Number(searchParams.get("minPrice")) : undefined,
-      maxPrice: searchParams.get("maxPrice") ? Number(searchParams.get("maxPrice")) : undefined,
-      inStock: searchParams.get("inStock") ? searchParams.get("inStock") === "true" : undefined,
-      sortBy: searchParams.get("sortBy") as "name" | "price" | "createdAt" | "popularity" || "createdAt",
-      sortOrder: searchParams.get("sortOrder") as "asc" | "desc" || "desc",
+      category: (searchParams.get("category") as ProductCategory) || undefined,
+      status: (searchParams.get("status") as ProductStatus) || undefined,
+      minPrice: searchParams.get("minPrice")
+        ? Number(searchParams.get("minPrice"))
+        : undefined,
+      maxPrice: searchParams.get("maxPrice")
+        ? Number(searchParams.get("maxPrice"))
+        : undefined,
+      inStock: searchParams.get("inStock")
+        ? searchParams.get("inStock") === "true"
+        : undefined,
+      sortBy:
+        (searchParams.get("sortBy") as
+          | "name"
+          | "price"
+          | "createdAt"
+          | "popularity") || "createdAt",
+      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
       page: searchParams.get("page") ? Number(searchParams.get("page")) : 1,
       limit: searchParams.get("limit") ? Number(searchParams.get("limit")) : 12,
     };
@@ -58,15 +69,24 @@ export async function GET(request: Request) {
       }
 
       // Category filter
-      if (validatedParams.category && product.category !== validatedParams.category) {
+      if (
+        validatedParams.category &&
+        product.category !== validatedParams.category
+      ) {
         return false;
       }
 
       // Price range filter
-      if (validatedParams.minPrice && product.price < validatedParams.minPrice) {
+      if (
+        validatedParams.minPrice &&
+        product.price < validatedParams.minPrice
+      ) {
         return false;
       }
-      if (validatedParams.maxPrice && product.price > validatedParams.maxPrice) {
+      if (
+        validatedParams.maxPrice &&
+        product.price > validatedParams.maxPrice
+      ) {
         return false;
       }
 
@@ -83,7 +103,8 @@ export async function GET(request: Request) {
       // Search query filter (search in name, description)
       if (validatedParams.q) {
         const query = validatedParams.q.toLowerCase();
-        const searchText = `${product.name} ${product.description}`.toLowerCase();
+        const searchText =
+          `${product.name} ${product.description}`.toLowerCase();
         if (!searchText.includes(query)) {
           return false;
         }
@@ -135,7 +156,7 @@ export async function GET(request: Request) {
     const availableCategories = Array.from(
       new Set(allProducts.map((p) => p.category))
     );
-    
+
     const prices = allProducts.map((p) => p.price);
     const priceRange = {
       min: Math.min(...prices),

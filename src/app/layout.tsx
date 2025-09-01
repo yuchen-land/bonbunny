@@ -1,10 +1,28 @@
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_TC, Playfair_Display } from "next/font/google";
 import { Metadata, Viewport } from "next";
 import StyledComponentsRegistry from "./lib/registry";
 import ClientLayout from "@/app/ClientLayout";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const notoSansTC = Noto_Sans_TC({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "700", "900"],
+  variable: "--font-noto-tc",
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-playfair",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "BonBunny 甜點工作室",
@@ -52,10 +70,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-TW" className="h-full">
-      <body
-        className={`${inter.className} h-full bg-background text-foreground antialiased`}
-      >
+    <html
+      lang="zh-TW"
+      className={`h-full ${inter.variable} ${notoSansTC.variable} ${playfairDisplay.variable}`}
+    >
+      <body className="h-full bg-background text-foreground antialiased font-body">
         <StyledComponentsRegistry>
           <ClientLayout font={inter}>{children}</ClientLayout>
         </StyledComponentsRegistry>

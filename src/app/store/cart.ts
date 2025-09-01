@@ -22,10 +22,12 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
       total: 0,
-      
+
       addItem: (product) =>
         set((state) => {
-          const existingItem = state.items.find((item) => item.id === product.id);
+          const existingItem = state.items.find(
+            (item) => item.id === product.id
+          );
           if (existingItem) {
             const updatedItems = state.items.map((item) =>
               item.id === product.id
@@ -43,7 +45,7 @@ export const useCartStore = create<CartStore>()(
             total: calculateTotal(newItems),
           };
         }),
-        
+
       removeItem: (productId) =>
         set((state) => {
           const newItems = state.items.filter((item) => item.id !== productId);
@@ -52,7 +54,7 @@ export const useCartStore = create<CartStore>()(
             total: calculateTotal(newItems),
           };
         }),
-        
+
       updateQuantity: (productId, quantity) =>
         set((state) => {
           const newItems = state.items
@@ -67,13 +69,13 @@ export const useCartStore = create<CartStore>()(
             total: calculateTotal(newItems),
           };
         }),
-        
+
       clearCart: () =>
         set(() => ({
           items: [],
           total: 0,
         })),
-        
+
       loadCart: () => {
         // This function is called automatically by the persist middleware
         // We can use it for any additional cart loading logic if needed
@@ -85,7 +87,7 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: 'bonbunny-cart-storage', // unique name for localStorage key
+      name: "bonbunny-cart-storage", // unique name for localStorage key
       storage: createJSONStorage(() => localStorage),
       // Only persist items, total will be calculated on load
       partialize: (state) => ({ items: state.items }),

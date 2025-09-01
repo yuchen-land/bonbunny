@@ -76,22 +76,30 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}{" "}
+          {/* Logo */}
           <Link
             href="/"
-            className="flex items-center py-2 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-3 py-2 hover:opacity-80 transition-opacity"
             onClick={closeMenu}
           >
             <div className="h-10 flex items-center">
               <Image
                 src="/logo.svg"
                 alt="BonBunny Logo"
-                width={160}
+                width={40}
                 height={40}
                 className="w-auto h-full object-contain relative z-10"
                 style={{ color: "currentColor" }}
                 priority
               />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-lg font-bold text-primary font-display">
+                BonBunny
+              </span>
+              <span className="text-xs text-muted font-ui -mt-1">
+                甜點工作室
+              </span>
             </div>
           </Link>
           {/* Desktop Navigation */}
@@ -216,7 +224,6 @@ const Navbar = () => {
               </Link>
             )}
           </div>
-
           {/* Search Bar */}
           <div className="hidden md:flex items-center mx-6">
             <form onSubmit={handleSearch} className="relative">
@@ -236,7 +243,6 @@ const Navbar = () => {
               </button>
             </form>
           </div>
-
           {/* Desktop User Actions */}
           <div className="hidden md:flex items-center space-x-6">
             {/* Favorites */}
